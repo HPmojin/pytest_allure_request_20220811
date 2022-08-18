@@ -30,6 +30,7 @@ class operation_excle:
         #ws = wb[title]  # 打开指定页
         # 取出每行的值，以list方式存放
         rows_list = []
+        #rows_list=[[],[],[]]
         for row in ws.rows:
             row_list = []
             for cell in row:
@@ -51,8 +52,8 @@ class operation_excle:
             for j in range(len(rows_list[0])):
                 row_dict[rows_list[0][j]] = rows_list[i + 1][j]
             result.append(row_dict)
-        # print(reslut)
-        # return result#返回字典形式
+        print(result)
+        #return result#返回字典形式
         #print(rows_list)
         return rows_list  # 返回列表形式
 

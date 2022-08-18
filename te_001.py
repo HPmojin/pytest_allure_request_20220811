@@ -9,8 +9,9 @@
 #-------------------------------------------------------------------------------
 from common.operation_excle import operation_excle
 from common.api_request import Api_Request
-case_list=operation_excle.read_excel('./data/case_data.xlsx', ["P1","P2","P3","P4"])
 
+case_list=operation_excle.read_excel('./data/case_data.xlsx', ["P1","P2","P3","P4"])#[[],[],[],]
 for case in case_list:
 
     (Api_Request.api_data(case))
+

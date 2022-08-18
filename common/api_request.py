@@ -11,7 +11,7 @@
 from requests import Session
 from common.logger import Logger
 from common.exchange_data import ExchangeData
-
+import allure,json
 class Api_Request(Session):
 
     @classmethod
@@ -31,6 +31,9 @@ class Api_Request(Session):
             sql,
             expect,
         ) = cases
+
+        # a,b=1,2
+
         path=ExchangeData.rep_expr(path,return_type='srt')
         header_ex=ExchangeData.rep_expr(header_ex,return_type='dict')
         data=ExchangeData.rep_expr(data,return_type='dict')
@@ -39,8 +42,12 @@ class Api_Request(Session):
         res=Api_Request().api_request("%s%s"%(url,path),method,parametric_key,header_ex,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
-        Logger.info('提前参数路径：%s' % extra)
+
+        ExchangeData.extra_allure(extra)#显示提取参数路径
+        Logger.info('提取参数路径：%s' % extra)
         Logger.info('参数池：%s' % ExchangeData.extra_pool)
+
+        ExchangeData.extra_pool_allure()#显示参数池数
         return res
 
 
@@ -57,6 +64,24 @@ class Api_Request(Session):
             parametric={"json":data}
         else:
             raise ValueError("“parametric_key”的可选关键字为params, json, data")
+
+
+        req_info = {
+            "请求地址": url,
+            "请求头": header,
+            "请求方法": method,
+            '参数类型':parametric_key,
+            "请求数据": data,
+            "上传文件": str(file),
+        }
+        with allure.step('请求数据：'):
+            allure.attach(
+                json.dumps(req_info, ensure_ascii=False, indent=4),
+                "附件内容",
+                allure.attachment_type.JSON,
+            )
+
+
         Logger.info('接口地址：%s' % url)
         Logger.info('请求头：%s' % header)
         Logger.info('请求方法：%s' % method)
@@ -71,6 +96,14 @@ class Api_Request(Session):
             raise '请求发送失败：%s'%(e)
 
         Logger.info('返回响应：%s' % response)
+
+        with allure.step('响应数据：'):
+            allure.attach(
+                json.dumps(response, ensure_ascii=False, indent=4),
+                "附件内容",
+                allure.attachment_type.JSON,
+            )
+
 
         return response
 

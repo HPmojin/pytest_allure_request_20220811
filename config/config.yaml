@@ -1,0 +1,74 @@
+server:
+  # 本地接口服务
+  test: http://121.36.11.156:81/ss
+  dev: http://127.0.0.1:8888/api/private/v1
+
+
+
+severity:
+  case_severity: ["P1","P2","P3","P4"]#用例等级 "["P1","P2","P3","P4","P5"]"  设置需要测试用例等级
+  cor_rel_case_severity: #用例等级和allure报告优先级的对应关系
+    P1: blocker
+    P2: critical
+    P3: normal
+    P4: minor
+    P5: trivial
+
+
+
+
+
+
+
+# 基准的请求头信息
+request_headers: {}
+
+
+
+
+file_path:
+  test_case: ./data/case_data.xlsx
+  report: target/
+  log: log/run{time}.log
+
+email:
+  # 发件人邮箱
+  user:  huoyan_hyh@163.com
+  # 发件人邮箱授权码
+  password:  DY***********HK
+  # 邮箱host
+  host:  smtp.163.com
+  contents:  解压apiAutoReport.zip(接口测试报告)后，请使用已安装Live Server 插件的VsCode，打开解压目录下的index.html查看报告
+  # 收件人邮箱
+  addressees:  ["397135766@qq.com", "178999718@qq.com"]
+  title:  接口自动化测试报告(见附件)
+  # 附件
+  enclosures: report.zip
+
+# 数据库校验- mysql
+database:
+  host: localhost #localhost  127.0.0.1
+  port: 3306
+  user: root
+  # 不用''会被解析成int类型数据
+  password: root
+  db_name:  mydb
+  charset:  utf8mb4
+
+  # 数据库所在的服务器配置
+  ssh_server:
+    port: 22
+    username: Administrator
+    password: '1'
+    # 私有密钥文件路径
+    private_key_file: ''
+    # 私钥密码
+    privat_passowrd: ''
+    # 如果使用的docker容器部署mysql服务，需要传入mysql的容器id/name
+    mysql_container:
+    # 数据库备份文件导出的本地路径, 需要保证存在该文件夹
+    sql_data_file: ./backup_sqls/
+
+
+
+
