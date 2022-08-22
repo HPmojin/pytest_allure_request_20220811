@@ -1,7 +1,7 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# @File : te002.py
+# @File : Template 使用,替换参数.py
 # @Time : 2022-08-09 09:42
 # @Author : mojin
 # @Email : 397135766@qq.com
