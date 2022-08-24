@@ -22,29 +22,34 @@ class operation_excle:
 
 
     @classmethod
-    def read_excel(cls,file_name, case_severity_list,title='Sheet1'):
+    def read_excel(cls,file_name, case_severity_list):
 
 
         wb = openpyxl.load_workbook(file_name)
-        ws = wb.active#打开当前页
-        #ws = wb[title]  # 打开指定页
-        # 取出每行的值，以list方式存放
+        #ws = wb.active#打开当前页
+        sheet_names = wb.sheetnames  # 得到工作簿的所有工作表名 结果： ['Sheet1', 'Sheet2', 'Sheet3']
         rows_list = []
-        #rows_list=[[],[],[]]
-        for row in ws.rows:
-            row_list = []
-            for cell in row:
-                if cell.value == None:
-                    cell_srt = ''
-                else:
-                    cell_srt = cell.value
-                #print(cell.value)
-                row_list.append(cell_srt)
+        for title in sheet_names:
+            ws = wb[title]  # 打开指定页
+            # 取出每行的值，以list方式存放
 
-            if row_list[4] in case_severity_list:#筛选匹配的用例等级进行测试
-                rows_list.append(row_list)
-        #print(rows_list)
-        # 结果转换成键值对的形式存放
+            #rows_list=[[],[],[]]
+            for row in ws.rows:
+                row_list = []
+                for cell in row:
+                    if cell.value == None:
+                        cell_srt = ''
+                    else:
+                        cell_srt = cell.value
+                    #print(cell.value)
+                    row_list.append(cell_srt)
+
+                row_list.append(title)
+                if row_list[4] in case_severity_list:#筛选匹配的用例等级进行测试
+
+                    rows_list.append(row_list)
+            #print(rows_list)
+            # 结果转换成键值对的形式存放
 
         result = []
         for i in range(len(rows_list) - 1):

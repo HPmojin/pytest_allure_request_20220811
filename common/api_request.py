@@ -16,13 +16,14 @@ class Api_Request(Session):
 
     @classmethod
     def api_data(cls,cases):
-        url="http://127.0.0.1:8888/api/private/v1/"
+        url="http://192.168.1.10:8888/api/private/v1/"
         (
             case_id,
             case_title,
             header_ex,
             path,
             case_severity,
+            skips,
             method,
             parametric_key,
             file_obj,
@@ -37,6 +38,7 @@ class Api_Request(Session):
         path=ExchangeData.rep_expr(path,return_type='srt')
         header_ex=ExchangeData.rep_expr(header_ex,return_type='dict')
         data=ExchangeData.rep_expr(data,return_type='dict')
+        file_obj=ExchangeData.rep_expr(file_obj,return_type='dict')
         Logger.info(case_title)
 
         res=Api_Request().api_request("%s%s"%(url,path),method,parametric_key,header_ex,(data),file_obj)
@@ -47,7 +49,7 @@ class Api_Request(Session):
         Logger.info('提取参数路径：%s' % extra)
         Logger.info('参数池：%s' % ExchangeData.extra_pool)
 
-        ExchangeData.extra_pool_allure()#显示参数池数
+
         return res
 
 

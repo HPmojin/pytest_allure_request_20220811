@@ -13,6 +13,7 @@ import openpyxl
 # print(jsonpath.jsonpath(r, "$..msg")[0])
 # print(jsonpath.jsonpath(r, "$..status")[0])
 
-from common.read_file import ReadFile
-
-print(ReadFile.read_config('$..cor_rel_case_severity'))
+from common.db import DB
+sql_srt="SELECT * FROM sp_goods WHERE goods_id = ${goods_id};SELECT * FROM sp_goods WHERE goods_id = ${goods_id}"
+for n, sql in enumerate(sql_srt.split(";")):
+    print([n, sql])
