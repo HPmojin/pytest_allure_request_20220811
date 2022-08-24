@@ -4,7 +4,7 @@
 # @Time    : 2022/8/11 20:28
 # @Author  : mojin
 # @Email   : 397135766@qq.com
-# @File    : te_001.py
+# @File    : jsonpath提取参数.py
 # @Software: PyCharm
 #-------------------------------------------------------------------------------
 from common.operation_excle import operation_excle
