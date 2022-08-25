@@ -42,7 +42,7 @@ class ExchangeData():
             Extract_noe_v = ((jsonpath.jsonpath((dic_data), josn_path))[0])
 
         except Exception as e:
-            Extract_noe_v = None
+            Extract_noe_v = josn_path
             Logger.error('提取参数出错！！（%s）' % e)
 
         return Extract_noe_v

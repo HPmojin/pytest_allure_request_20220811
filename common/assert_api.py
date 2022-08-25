@@ -11,13 +11,17 @@ from common.exchange_data import ExchangeData
 from common.logger import Logger
 import jsonpath,allure,json
 class AssertApi():
+    re_sql_data={}
 
     def assert_api(self,response,case):
         ExchangeData.extra_pool_allure()  # 显示参数池数
         expect=case[-1]
         result_all=[]
         result_dic_list=[]
-        if expect != "":
+        self.re_sql_data.update(response)
+        Logger.info(self.re_sql_data)
+
+        if expect != "" and expect != "{}":
             n = 1
             for k, v in eval(expect).items():
                 # Logger.info((jsonpath.jsonpath(response, k)[0]))
@@ -25,13 +29,15 @@ class AssertApi():
                 # actual_results=(jsonpath.jsonpath(response, k)[0])#实际结果
                 #k = ExchangeData.rep_expr(k, return_type='srt')
                 #v = ExchangeData.rep_expr(v, return_type='srt')
-                actual_results = ExchangeData.Extract_noe(response,k)
+                real_k = ExchangeData.Extract_noe(self.re_sql_data,k)
+                real_v = ExchangeData.Extract_noe(self.re_sql_data, v)
 
-                result = (v == actual_results)
+
+                result = (real_v == real_k)
                 result_dic={
-                        "提取路径": k,
-                        "实际结果": actual_results,
-                        "预期结果": v,
+                        "提取路径": [k,v],
+                        "实际结果": real_k,
+                        "预期结果": real_v,
                         "测试结果": result
                         }
                 result_all.append(result)
@@ -56,19 +62,22 @@ class AssertApi():
 
     def assert_sql(self, response, case,get_db):
 
+
         sql_srt=case[-2]
         if sql_srt!="":
             sql_srt = ExchangeData.rep_expr(sql_srt, return_type='srt')
+
             with allure.step('执行sql：%s' % (sql_srt)):
                 for n,sql in enumerate(sql_srt.split(";")):
                     Logger.info([n,sql])
                     data_sql_dic=get_db.execute_sql(sql)
                     Logger.info(data_sql_dic)
                     Logger.info(type(data_sql_dic))
-                    ExchangeData.extra_pool.update({"sql_%s_data"%n:data_sql_dic})
-                    Logger.info(ExchangeData.extra_pool)
+                    #ExchangeData.extra_pool.update({"sql_%s_data"%n:data_sql_dic})
+                    self.re_sql_data.update({"sql_%s_data"%n:data_sql_dic})
+                    #Logger.info(ExchangeData.extra_pool)
                     allure.attach(
-                        json.dumps(data_sql_dic, ensure_ascii=False, indent=4),
+                        json.dumps({"sql_%s_data"%n:data_sql_dic}, ensure_ascii=False, indent=4),
                         sql,
                         allure.attachment_type.JSON,
                     )

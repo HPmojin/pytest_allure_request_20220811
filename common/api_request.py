@@ -12,11 +12,14 @@ from requests import Session
 from common.logger import Logger
 from common.exchange_data import ExchangeData
 import allure,json
+from common.read_file import ReadFile
+
 class Api_Request(Session):
 
     @classmethod
     def api_data(cls,cases):
-        url="http://192.168.1.10:8888/api/private/v1/"
+        url=ReadFile.read_config('$..dev')
+        #url="http://192.168.1.10:8888/api/private/v1/"
         (
             case_id,
             case_title,
@@ -41,7 +44,7 @@ class Api_Request(Session):
         file_obj=ExchangeData.rep_expr(file_obj,return_type='dict')
         Logger.info(case_title)
 
-        res=Api_Request().api_request("%s%s"%(url,path),method,parametric_key,header_ex,(data),file_obj)
+        res=Api_Request().api_request("%s/%s"%(url,path),method,parametric_key,header_ex,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
 
