@@ -13,11 +13,23 @@ from common.logger import Logger
 from common.exchange_data import ExchangeData
 import allure,json
 from common.read_file import ReadFile
-
+from common.condition import Condition
 class Api_Request(Session):
 
     @classmethod
     def api_data(cls,cases):
+        Condition().skip_if(cases)
+
+        allure.dynamic.title(cases[1])
+        allure.dynamic.story(cases[-1])
+        del cases[-1]
+
+
+        allure.dynamic.severity(ReadFile.read_config('$..cor_rel_case_severity')[cases[4]])
+
+
+
+
         url=ReadFile.read_config('$..dev')
         #url="http://192.168.1.10:8888/api/private/v1/"
         (

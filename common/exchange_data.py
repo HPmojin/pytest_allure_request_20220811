@@ -28,7 +28,7 @@ class ExchangeData():
                     cls.extra_pool[k] = jsonpath.jsonpath(response, v)[0]
                 except Exception as e:
                     cls.extra_pool[k]=None
-                    Logger.error("提前参数异常！！！（%s）"%str(e))
+                    #Logger.error("提前参数异常！！！（%s）"%str(e))
 
 
     # @classmethod
@@ -43,7 +43,8 @@ class ExchangeData():
 
         except Exception as e:
             Extract_noe_v = josn_path
-            Logger.error('提取参数出错！！（%s）' % e)
+            #Extract_noe_v = None
+            #Logger.error('提取参数出错！！（%s）' % e)
 
         return Extract_noe_v
 
@@ -74,6 +75,7 @@ class ExchangeData():
 
 
             for func in re.findall('\\${(.*?)}', content):#${fk.random_int(min=1000,max=9999)   ${sdsd()}
+                #Logger.error(func)
 
                 try:
                     content = content.replace('${%s}' % func, cls.exec_func(func))

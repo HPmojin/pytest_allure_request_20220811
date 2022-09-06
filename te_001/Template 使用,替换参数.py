@@ -8,17 +8,34 @@
 # @Software : PyCharm
 #-------------------------------------------------------------------------------
 from string import Template
+import re
 #Template 使用,替换参数
 
-
-
+def num():
+    return 6+10
+def num2():
+    return 6+13
 
 
 d={'a':'apple','b':'banbana',}
-print(Template("There ${a} and ${b}").substitute(d))
+content_srt="There ${a} and ${b},${num()} and ${num2()} "
 
 
+def test_(content_srt):
+    content = (Template(content_srt).safe_substitute(d))
 
+    for func in re.findall('\\${(.*?)}', content):
+
+        loc = locals()
+        # exec("sum()")
+        exec(f"result = %s" % func)
+
+        content = content.replace('${%s}' % func, str(loc['result']))
+
+    return (content)
+
+
+print(test_(content_srt))
 
 # srt_  = '{"member_id":#member_id#,"amount":2000}'
 # member_id = "16"

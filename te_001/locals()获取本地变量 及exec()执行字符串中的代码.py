@@ -17,14 +17,16 @@ def sum():
 
     return (sum)
 
+a='"None"!="None"'
 
 loc = locals()
 
 # exec("sum()")
 exec(f"result = sum()")
+exec(f"r = {a}")
 #
 print(loc['result'])
-
+print(loc['r'])
 
 
 # hello = 123

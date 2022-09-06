@@ -1,8 +1,8 @@
 server:
   # 本地接口服务
-  test: http://121.36.33.56:81/ss
-  #dev: http://192.168.1.10:8888/api/private/v1
-  dev: http://127.0.0.1:8888/api/private/v1
+  test: http://192.168.1.15:8888/api/private/v1
+  dev: http://192.168.1.12:8888/api/private/v1
+  #dev: http://127.0.0.1:8888/api/private/v1
 
 
 
@@ -48,7 +48,7 @@ email:
 
 # 数据库校验- mysql
 database:
-  host: "127.0.0.1" #localhost  127.0.0.1
+  host: "192.168.1.12" #localhost  127.0.0.1
   port: 3306
   user: root
   # 不用''会被解析成int类型数据

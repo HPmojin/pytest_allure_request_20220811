@@ -18,21 +18,23 @@ dic_data={
         "email": "adsfad@qq.com",
         "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjowLCJpYXQiOjE2NjAxMjEyMDYsImV4cCI6MTY2MDIwNzYwNn0.el8d3Wj4vgqqsC33Ypwc18kcEoScuu228hOKnU1Dozw"
     },
+    "token": "Bea",
     "meta": {
         "msg": "登录成功",
-        "status": 200
+        "status": 200,
+        "token": "Bearer eyJhbGciOiJIUz"
     }
 }
 
-# print(jsonpath.jsonpath(dic_data,"$.data.token")[0])
-extract_data={}
-
-josn_path_dic={"email": "$..email","token":"$.data.token","mobile":"$.data.mobile"}
-for k,v in josn_path_dic.items():
-
-    extract_data[k]=jsonpath.jsonpath(dic_data, v)[0]
-
-print(extract_data)
+print(jsonpath.jsonpath(dic_data,"$.data.token")[0])
+# extract_data={}
+#
+# josn_path_dic={"email": "$..email","token":"$.data.token","mobile":"$.data.mobile"}
+# for k,v in josn_path_dic.items():
+#
+#     extract_data[k]=jsonpath.jsonpath(dic_data, v)[0]
+#
+# print(extract_data)
 # for k, v in josn_path_dic.items():
 #
 #     extract_data[k]=(jsonpath.jsonpath(dic_data, v)[0])

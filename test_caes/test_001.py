@@ -20,16 +20,15 @@ Sheet=operation_excle.read_excel(ReadFile.read_config('$..test_case'), ReadFile.
 class Test():
 
     @pytest.mark.parametrize("case",Sheet)
-    def test_001(self,case,get_db):
-        allure.dynamic.title(case[1])
-        allure.dynamic.story(case[-1])
-        del case[-1]
-        allure.dynamic.severity(ReadFile.read_config('$..cor_rel_case_severity')[case[4]])
+    def test_001(self,case,get_db):#,get_db
 
         response=(Api_Request.api_data(case))
 
-        AssertApi().assert_sql(response, case,get_db)
-        assert AssertApi().assert_api(response,case)
+        assert AssertApi().assert_api(response,case,get_db)#,get_db
+
+
+
+
 
     # @pytest.mark.parametrize("case",Sheet1)
     # def test_002(self,case,get_db):
