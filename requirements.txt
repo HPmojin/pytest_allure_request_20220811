@@ -1,0 +1,12 @@
+pytest==6.2.1
+PyMySQL==0.9.3
+requests==2.26.0
+loguru==0.4.0
+yagmail==0.15.280
+allure_python_commons==2.9.45
+Faker==13.15.1
+paramiko==2.11.0
+jsonpath==0.82
+Flask==1.1.4
+openpyxl==3.0.10
+PyYAML==6.0
