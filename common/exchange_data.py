@@ -27,7 +27,7 @@ class ExchangeData():
                 try:
                     cls.extra_pool[k] = jsonpath.jsonpath(response, v)[0]
                 except Exception as e:
-                    cls.extra_pool[k]=None
+                    cls.extra_pool[k]=""
                     #Logger.error("提前参数异常！！！（%s）"%str(e))
 
 

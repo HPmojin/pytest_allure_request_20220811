@@ -33,6 +33,8 @@ class Condition():
                     try:
                         Logger.info(skips_srt)
                         exec(f"result = %s" % skips_srt)
+                        Logger.info(f"result = %s" % skips_srt)
+                        Logger.info(loc['result'])
                         result_list.append(loc['result'])
                     except:
                         result_list.append(True)

@@ -80,7 +80,7 @@ class RemoteServe:
         :param remote_path: 服务器上的文件路径，默认在/root目录下
         """
         if post:  # 上传文件
-            self.execute_cmd("mkdir /mnt/backup_sql",docs='创建/mnt/backup_sql目录')
+            self.execute_cmd("mkdir -p /mnt/backup_sql",docs='创建/mnt/backup_sql目录')
             self.ftp_client.put(
                 localpath=local_path,
                 remotepath=f"{remote_path}{os.path.split(local_path)[1]}",
