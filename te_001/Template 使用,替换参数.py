@@ -17,14 +17,15 @@ def num2():
     return 6+13
 
 
-d={'a':'apple','b':'banbana',}
+d={'a1':'apple','b':'banbana',}
 content_srt="There ${a} and ${b},${num()} and ${num2()} "
 
 
 def test_(content_srt):
     content = (Template(content_srt).safe_substitute(d))
-
+    print(content)
     for func in re.findall('\\${(.*?)}', content):
+
 
         loc = locals()
         # exec("sum()")

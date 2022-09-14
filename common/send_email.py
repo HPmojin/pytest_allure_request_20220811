@@ -24,7 +24,7 @@ class EmailServe:
         :param out_path: 压缩文件保存路径+xxxx.zip
         :return: 无
         """
-        file_path = f"{file_path}/test_report"
+        #file_path = f"{file_path}/test_report"
         zip = zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED)
         for path, dirnames, filenames in os.walk(file_path):
             # 去掉目标跟路径，只对目标文件夹下边的文件及文件夹进行压缩
@@ -51,14 +51,17 @@ class EmailServe:
         :param file_path: 需要压缩的文件夹
         :return:
         """
+        Logger.info('开始打包allure报告')
         EmailServe.zip_report(
             file_path=file_path,
             out_path=setting['enclosures'])
+        Logger.success('打包allure报告完成')
         yag = yagmail.SMTP(
             setting['user'],
             setting['password'],
             setting['host'])
         # 发送邮件
+        Logger.info('开始发送邮件……')
         yag.send(
             setting['addressees'],
             setting['title'],
@@ -66,15 +69,15 @@ class EmailServe:
             setting['enclosures'])
         # 关闭服务
         yag.close()
-        Logger.info("邮件发送成功！")
+        Logger.success("邮件发送成功！")
 
-
+#
 # if __name__ == '__main__':
-#     #EmailServe.zip_report('../target/allure-report', '../allure-report.zip')
+#     EmailServe.zip_report('../target/allure-report', '../allure-report.zip')
 #     file_path='../allure-report.zip'
 #     from common.read_file import ReadFile
 #
 #     setting = ReadFile.read_config('$.email')
-#
-#     EmailServe.send_email(setting,file_path)
+
+    #EmailServe.send_email(setting,file_path)
 
