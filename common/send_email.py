@@ -51,11 +51,11 @@ class EmailServe:
         :param file_path: 需要压缩的文件夹
         :return:
         """
-        Logger.info('开始打包allure报告')
+        Logger.info('开始将allure报告压缩zip包')
         EmailServe.zip_report(
             file_path=file_path,
             out_path=setting['enclosures'])
-        Logger.success('打包allure报告完成')
+        Logger.success('压缩打包allure报告完成')
         yag = yagmail.SMTP(
             setting['user'],
             setting['password'],
