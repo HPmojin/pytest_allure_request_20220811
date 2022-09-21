@@ -1,0 +1,22 @@
+1. 源码地址：https://gitee.com/wBekvam/vueShop-api-server
+
+2. 文件中配置数据库 /config/default.json 
+
+
+3. 导入数据库 db/mysdb.sql
+
+4. 项目所在主目录下
+	设置淘宝镜像：npm config set registry https://registry.npm.taobao.org
+	安装依赖： npm install
+    启动项目 ：node app.js
+
+5.接口文档
+https://gitee.com/wBekvam/vueShop-api-server/blob/master/api%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3.md
+
+登录接口
+http://127.0.0.1:8888/api/private/v1/login
+
+{
+    "username": "admin",
+    "password": "123456"
+}

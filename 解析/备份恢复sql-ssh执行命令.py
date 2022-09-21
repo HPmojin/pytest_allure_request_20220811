@@ -1,15 +1,20 @@
 #!/usr/bin/python3.7
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# @Time    : 2022/9/13 20:52
+# @Time    : 2022/9/13 20:39
 # @Author  : mojin
 # @Email   : 397135766@qq.com
-# @File    : FTP上传文件.py
+# @File    : 备份恢复sql-ssh执行命令.py
 # @Software: PyCharm
 #-------------------------------------------------------------------------------
 
+#pip3 install paramiko
+
+#https://www.cnblogs.com/honey-badger/p/8424638.html
 import paramiko
 import time
+
+
 
 host='192.168.1.183'
 port=22
@@ -19,16 +24,15 @@ password='root'
 trans = paramiko.Transport((host, port))
 trans.connect(username=username, password=password,)
 
+ssh = paramiko.SSHClient()
+ssh._transport = trans
 
-ftp = paramiko.SFTPClient.from_transport(trans)  # 实例化一个ftp
+stdin, stdout, stderr = ssh.exec_command("ls")
 
-
-# ftp.get('服务器文件路径', ' 本地文件路径')  # 下载文件
-# ftp.put('本地文件路径', '服务器文件路径')  # 上传文件
-
-ftp.put( '../config/mydb.sql', '/mnt/backup/mydb.sql')  # 上传文件
-ftp.get('/mnt/backup/mydb.sql', 'mydb.sql')  # 下载文件
+print(stdout.read().decode('utf-8'))
 
 
-ftp.close()
+
+time.sleep(1)#报错https://blog.csdn.net/linpengzt/article/details/122043101
+ssh.close()
 trans.close()

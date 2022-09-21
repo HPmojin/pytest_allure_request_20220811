@@ -1,7 +1,7 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# @File : 请求参类型params，json，data 含义.py
+# @File : 发送请求02-请求参类型params，json，data 含义.py
 # @Time : 2022-08-18 10:00
 # @Author : mojin
 # @Email : 397135766@qq.com

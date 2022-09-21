@@ -4,7 +4,7 @@
 # @Time    : 2022/9/13 19:57
 # @Author  : mojin
 # @Email   : 397135766@qq.com
-# @File    : send_email.py
+# @File    : 邮件.py
 # @Software: PyCharm
 #-------------------------------------------------------------------------------
 
@@ -62,13 +62,11 @@ class EmailServe:
             setting['host'])
         # 发送邮件
         Logger.info('开始发送邮件……')
-
         yag.send(
             setting['addressees'],
             setting['title'],
             setting['contents'],
             setting['enclosures'])
-        # setting['contents']
         # 关闭服务
         yag.close()
         Logger.success("邮件发送成功！")

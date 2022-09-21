@@ -1,7 +1,7 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# @File : Template 使用,替换参数.py
+# @File : 参数依赖03-Template 使用,替换参数.py
 # @Time : 2022-08-09 09:42
 # @Author : mojin
 # @Email : 397135766@qq.com
@@ -17,11 +17,11 @@ def num2():
     return 6+13
 
 
-d={'a1':'apple','b':'banbana',}
+d={'a':'apple','b':'banbana',}
 content_srt="There ${a} and ${b},${num()} and ${num2()} "
 
 
-def test_(content_srt):
+def Templ_te(content_srt):
     content = (Template(content_srt).safe_substitute(d))
     print(content)
     for func in re.findall('\\${(.*?)}', content):
@@ -36,7 +36,7 @@ def test_(content_srt):
     return (content)
 
 
-print(test_(content_srt))
+print(Templ_te(content_srt))
 
 # srt_  = '{"member_id":#member_id#,"amount":2000}'
 # member_id = "16"

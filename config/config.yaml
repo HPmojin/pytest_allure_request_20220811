@@ -44,7 +44,7 @@ email:
   addressees:  ["397135766@qq.com", "178999718@qq.com"]
   title:  接口自动化测试报告(见附件)
   # 附件
-  enclosures: allure-report.zip
+  enclosures: ./report_zip/allure-report.zip
 
 # 数据库校验- mysql
 database:

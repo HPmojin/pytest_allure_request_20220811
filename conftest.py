@@ -13,6 +13,8 @@ from common.db import DB
 import pytest
 import pytest,time
 from common.logger import Logger
+from common.Bak_Rec_DB import BakRecDB
+from common.read_file import ReadFile
 
 @pytest.fixture(scope='session')
 def get_db():
@@ -28,12 +30,18 @@ def get_db():
 #备份恢复数据库
 @pytest.fixture(scope='session',autouse=False)#False True
 def BakRecDB():
-    from common.Bak_Rec_DB import BakRecDB
-    # BakRecDB().backups_sql()
-    # BakRecDB().recovery_sql()
-    BakRecDB().backups_sql()
+    #获取配置文件中的远程服务器和数据库参数
+    host = ReadFile.read_config('$.database.host')
+    ssh_port = ReadFile.read_config('$.database.ssh_server.port')
+    ssh_user = ReadFile.read_config('$.database.ssh_server.username')
+    ssh_pwd = ReadFile.read_config('$.database.ssh_server.password')
+    sql_data_file = ReadFile.read_config('$.database.ssh_server.sql_data_file')
+
+
+    BR=BakRecDB(host=host, port=ssh_port, username=ssh_user, password=ssh_pwd) #初始化链接服务器
+    BR.backups_sql()  # 链接ssh远程访问，上传测试sql数据，备份当前数据库，导入测试sql库，
     yield
-    BakRecDB().recovery_sql()
+    BR.recovery_sql()  # 恢复测试前sql数据，关闭ssh链接
 
 
 def pytest_terminal_summary(terminalreporter):

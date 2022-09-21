@@ -1,7 +1,7 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
-# @File : jsonpath提取参数.py
+# @File : 参数依赖01-jsonpath提取参数.py
 # @Time : 2022-08-08 15:52
 # @Author : mojin
 # @Email : 397135766@qq.com
