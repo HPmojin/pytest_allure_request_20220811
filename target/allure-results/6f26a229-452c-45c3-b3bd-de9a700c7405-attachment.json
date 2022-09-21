@@ -1,0 +1,51 @@
+{
+    "data": {
+        "goods_id": 948,
+        "cat_id": 3,
+        "goods_name": "商品_3207",
+        "goods_price": 20,
+        "goods_number": 30,
+        "goods_weight": 40,
+        "goods_introduce": "abc",
+        "goods_big_logo": "",
+        "goods_small_logo": "",
+        "goods_state": null,
+        "is_del": "0",
+        "add_time": 1663734246,
+        "upd_time": 1663734246,
+        "delete_time": null,
+        "hot_mumber": 0,
+        "is_promote": false,
+        "cat_one_id": 1,
+        "cat_two_id": 2,
+        "cat_three_id": 3,
+        "goods_cat": "1,2,3",
+        "pics": [],
+        "attrs": [
+            {
+                "goods_id": 948,
+                "attr_id": 15,
+                "attr_value": "dderd",
+                "add_price": null,
+                "attr_name": "主观参数-品牌",
+                "attr_sel": "only",
+                "attr_write": "manual",
+                "attr_vals": ""
+            },
+            {
+                "goods_id": 948,
+                "attr_id": 15,
+                "attr_value": "324",
+                "add_price": null,
+                "attr_name": "主观参数-品牌",
+                "attr_sel": "only",
+                "attr_write": "manual",
+                "attr_vals": ""
+            }
+        ]
+    },
+    "meta": {
+        "msg": "获取成功",
+        "status": 200
+    }
+}

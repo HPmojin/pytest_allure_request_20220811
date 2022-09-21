@@ -1,0 +1,12 @@
+{
+    "sql_0_data": {
+        "mg_id": 500,
+        "mg_name": "admin",
+        "mg_pwd": "$2y$10$sZlpZNoLAnoD1DtYO9REAODCPkpMb5bwl4oMzrMvJa83k9BY3KRwq",
+        "mg_time": 1486720211,
+        "role_id": 0,
+        "mg_mobile": "12345678",
+        "mg_email": "adsfad@qq.com",
+        "mg_state": 1
+    }
+}
