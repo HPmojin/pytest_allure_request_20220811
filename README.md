@@ -87,6 +87,8 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle，一个支�
 │  搭建服务器说明.txt  #  搭建接口服务说明      
 
 ```
+
+![img__1.png](config/png/img__1.png)
 #### 安装教程
 
 1.  python10 需要安装pytest==7.1.3
