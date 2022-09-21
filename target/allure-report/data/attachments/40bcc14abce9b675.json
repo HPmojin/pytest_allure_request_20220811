@@ -1,0 +1,10 @@
+{
+    "data": {
+        "tmp_path": "tmp_uploads\\09e99e714cb65e55176c67210356e1ba.file",
+        "url": "http://127.0.0.1:8888/tmp_uploads\\09e99e714cb65e55176c67210356e1ba.file"
+    },
+    "meta": {
+        "msg": "上传成功",
+        "status": 200
+    }
+}

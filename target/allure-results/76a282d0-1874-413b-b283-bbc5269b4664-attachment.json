@@ -1,0 +1,16 @@
+{
+    "请求地址": "http://127.0.0.1:8888/api/private/v1/goods/949",
+    "请求头": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjowLCJpYXQiOjE2NjM3NDMzNjQsImV4cCI6MTY2MzgyOTc2NH0.oy39wwNy_tlQLm7QF5so3dtkI3AC2n-RUUjpmXkSUsk"
+    },
+    "请求方法": "put",
+    "参数类型": "json",
+    "请求数据": {
+        "goods_name": "商品_8641",
+        "goods_cat": "1,2,3",
+        "goods_price": 20,
+        "goods_number": 30,
+        "goods_weight": 40
+    },
+    "上传文件": "{}"
+}

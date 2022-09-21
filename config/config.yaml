@@ -34,14 +34,14 @@ file_path:
 
 email:
   # 发件人邮箱
-  user:  huoyan_hyh@163.com
+  user:  huoy*****@163.com
   # 发件人邮箱授权码
-  password:  DYTKTEPXOZXXZMHK
+  password:  DY*******MHK
   # 邮箱host
   host:  smtp.163.com
   contents:  解压allure-report.zip(接口测试报告)后，进入解压目录，运行Start_server.bat（需要有python环境），在浏览器输入http://127.0.0.1:5188/allure-report 即可查看测试报告。出现“Serving HTTP on 0.0.0.0 port 5188 (http://0.0.0.0:5188/) ...”表示服务启动完成，可以输入 http://127.0.0.1:5188/allure-report 地址查看报告
   # 收件人邮箱
-  addressees:  ["397135766@qq.com", "178999718@qq.com"]
+  addressees:  ["397135766@qq.com", "1*****8@qq.com"]
   title:  接口自动化测试报告(见附件)
   # 附件
   enclosures: ./report_zip/allure-report.zip

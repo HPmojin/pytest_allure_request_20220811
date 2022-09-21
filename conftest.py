@@ -16,7 +16,7 @@ from common.logger import Logger
 from common.Bak_Rec_DB import BakRecDB
 from common.read_file import ReadFile
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session')  #读取数据库查询断言
 def get_db():
 
     db=DB()
@@ -28,7 +28,7 @@ def get_db():
 
 
 #备份恢复数据库
-@pytest.fixture(scope='session',autouse=False)#False True
+@pytest.fixture(scope='session',autouse=False)#False True   autouse=False 为True时开启数据库备份恢复功能，为False时不开启备份恢复功能
 def BakRecDB():
     #获取配置文件中的远程服务器和数据库参数
     host = ReadFile.read_config('$.database.host')
