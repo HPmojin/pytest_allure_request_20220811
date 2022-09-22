@@ -38,7 +38,7 @@ class EmailServe:
         zip.close()
 
     @staticmethod
-    def send_email(setting: dict, file_path):
+    def send_email(setting: dict, file_path,result_data_test):
         """
         入参一个字典
         :param user: 发件人邮箱
@@ -51,6 +51,7 @@ class EmailServe:
         :param file_path: 需要压缩的文件夹
         :return:
         """
+
         Logger.info('开始将allure报告压缩zip包')
         EmailServe.zip_report(
             file_path=file_path,
@@ -66,7 +67,7 @@ class EmailServe:
         yag.send(
             setting['addressees'],
             setting['title'],
-            setting['contents'],
+            result_data_test,
             setting['enclosures'])
         # setting['contents']
         # 关闭服务

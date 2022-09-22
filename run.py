@@ -14,6 +14,7 @@ from shutil import copy
 from common.read_file import ReadFile
 from common.send_email import EmailServe
 from common.all_path import targetPath,Start_server_bat
+from common.exchange_data import ExchangeData
 
 def run():
 
@@ -30,8 +31,9 @@ def run():
     copy(Start_server_bat, targetPath) #拷贝 启动服务器脚本(config/Start_server.bat)，由config目录拷贝到target目录下进行压缩打包发送邮件
 
     Files_path='./target'#压缩打包的目录
-    EmailServe.send_email(setting,Files_path) #发送邮件
+    EmailServe.send_email(setting,Files_path,ExchangeData.get_pytest_summary()) #发送邮件
 
 
 if __name__ == '__main__':
+
     run()

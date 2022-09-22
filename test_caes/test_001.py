@@ -16,7 +16,7 @@ from common.read_file import ReadFile
 
 
 Sheet=operation_excle.read_excel(ReadFile.read_config('$..test_case'), ReadFile.read_config('$..case_severity'))
-
+@allure.epic(ReadFile.read_config("$.project_name"))  # 项目名称
 class Test():
 
     @pytest.mark.parametrize("case",Sheet)

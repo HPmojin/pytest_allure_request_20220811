@@ -48,6 +48,7 @@ class DB:
         """
         with self.connection.cursor() as cursor:
             try:
+                Logger.info(sql)
                 cursor.execute(sql)
                 result = cursor.fetchone()
 

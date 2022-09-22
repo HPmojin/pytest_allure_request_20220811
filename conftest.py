@@ -9,12 +9,13 @@
 #-------------------------------------------------------------------------------
 
 from common.db import DB
-
+from common.exchange_data import ExchangeData
 import pytest
 import pytest,time
 from common.logger import Logger
 from common.Bak_Rec_DB import BakRecDB
 from common.read_file import ReadFile
+
 
 @pytest.fixture(scope='session')  #读取数据库查询断言
 def get_db():
@@ -29,7 +30,7 @@ def get_db():
 
 #备份恢复数据库
 @pytest.fixture(scope='session',autouse=False)#False True   autouse=False 为True时开启数据库备份恢复功能，为False时不开启备份恢复功能
-def BakRecDB():
+def ConnectingRemoteServices():
     #获取配置文件中的远程服务器和数据库参数
     host = ReadFile.read_config('$.database.host')
     ssh_port = ReadFile.read_config('$.database.ssh_server.port')
@@ -56,6 +57,7 @@ def pytest_terminal_summary(terminalreporter):
     _TOTAL = terminalreporter._numcollected
     _TIMES = time.time() - terminalreporter._sessionstarttime
     Logger.error(f"用例总数: {_TOTAL}")
+    Logger.success(f"通过用例: {_PASSED}")
     Logger.error(f"异常用例数: {_ERROR}")
     Logger.error(f"失败用例数: {_FAILED}")
     Logger.warning(f"跳过用例数: {_SKIPPED}")
@@ -63,6 +65,19 @@ def pytest_terminal_summary(terminalreporter):
 
     try:
         _RATE = _PASSED / _TOTAL * 100
-        Logger.info("用例成功率: %.2f" % _RATE + " %")
+        _SUCCESS_RATE="%.2f" % _RATE + " %"
+
     except ZeroDivisionError:
-        Logger.info("用例成功率: 0.00 %")
+        _SUCCESS_RATE="0.00"
+
+    Logger.info(f"用例成功率:{_SUCCESS_RATE}")
+    result_data_test={
+        "_TOTAL": f"{_TOTAL}",
+        '_PASSED':f"{_PASSED}",
+        "_ERROR": f" {_ERROR}",
+        "_FAILED": f" {_FAILED}",
+        "_SKIPPED": f" {_SKIPPED}",
+        "_TIMES": "%.2f"% _TIMES + "s",
+        "_SUCCESS_RATE": f"{_SUCCESS_RATE}",
+    }
+    ExchangeData.post_pytest_summary(result_data_test)

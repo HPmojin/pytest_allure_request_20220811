@@ -7,17 +7,24 @@
 # @File    : exchange_data.py
 # @Software: PyCharm
 #-------------------------------------------------------------------------------
+
 import jsonpath,re,allure,json
+from faker import Faker
 from string import Template
 from common.logger import Logger
-#https://blog.csdn.net/weixin_43865008/article/details/115492280
-from faker import Faker
+#from common.read_file import ReadFile
 
-fk = Faker("zh_CN")
+
+fk = Faker("zh_CN") # https://blog.csdn.net/weixin_43865008/article/details/115492280
+
 class ExchangeData():
 
     # 存放提取参数的池子
-    extra_pool = {}
+    extra_pool ={"token":''}
+
+
+
+
 
     @classmethod
     def Extract(cls,response,josn_path_dic):
@@ -80,7 +87,7 @@ class ExchangeData():
                 try:
                     content = content.replace('${%s}' % func, cls.exec_func(func))
                 except Exception as e:
-                    print(str(e))
+                    Logger.error(str(e))
         else:
             if content=="":
                 content="{}"
@@ -118,3 +125,20 @@ class ExchangeData():
                 "附件内容",
                 allure.attachment_type.JSON,
             )
+
+    @classmethod
+    def post_pytest_summary(cls,result_data_test):#添加测试概况数据到变量池
+        from common.read_file import ReadFile
+        cls.extra_pool.update(result_data_test)
+        cls.extra_pool.update({"PROJECT_NAME":ReadFile.read_config("$.project_name")})
+        Logger.info(cls.extra_pool)
+
+
+
+    @classmethod
+    def get_pytest_summary(cls):#读取report.html模板，替换变量后，返回完整的html 作为发送邮件内容
+        file = open('./config/report.html', "r", encoding="utf-8")
+        data = file.read()
+        file.close()
+        data = ExchangeData.rep_expr(data, return_type='srt')
+        return data

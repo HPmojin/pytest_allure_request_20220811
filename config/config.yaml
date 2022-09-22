@@ -1,8 +1,10 @@
+project_name: XX商城
+
 server:
   # 本地接口服务
   test: http://192.168.1.15:8888/api/private/v1
-  #dev: http://192.168.1.183:8888/api/private/v1
-  dev: http://127.0.0.1:8888/api/private/v1
+  dev: http://192.168.1.183:8888/api/private/v1
+   #dev: http://127.0.0.1:8888/api/private/v1
 
 
 
@@ -22,8 +24,10 @@ severity:
 
 
 # 基准的请求头信息
-request_headers: {}
+request_headers: {'Authorization': ''}
 
+# 基准存放提取参数的池子
+extra_pool: {"token":''}
 
 
 
@@ -34,22 +38,22 @@ file_path:
 
 email:
   # 发件人邮箱
-  user:  huoy*****@163.com
+  user:  huoyan_hyh@163.com
   # 发件人邮箱授权码
-  password:  DY*******MHK
+  password:  DYTKTEPXOZXXZMHK
   # 邮箱host
   host:  smtp.163.com
   contents:  解压allure-report.zip(接口测试报告)后，进入解压目录，运行Start_server.bat（需要有python环境），在浏览器输入http://127.0.0.1:5188/allure-report 即可查看测试报告。出现“Serving HTTP on 0.0.0.0 port 5188 (http://0.0.0.0:5188/) ...”表示服务启动完成，可以输入 http://127.0.0.1:5188/allure-report 地址查看报告
   # 收件人邮箱
-  addressees:  ["397135766@qq.com", "1*****8@qq.com"]
+  addressees: ["397135766@qq.com", "huangpeng245@163.com"] #["397135766@qq.com", "178999718@qq.com"]
   title:  接口自动化测试报告(见附件)
   # 附件
   enclosures: ./report_zip/allure-report.zip
 
 # 数据库校验- mysql
 database:
-  #host: "192.168.1.183" #localhost  127.0.0.1
-  host: "127.0.0.1" #localhost  127.0.0.1
+  host: "192.168.1.183" #localhost  127.0.0.1
+  #host: "127.0.0.1" #localhost  127.0.0.1
   port: 3306
   user: root
   # 不用''会被解析成int类型数据
@@ -70,7 +74,3 @@ database:
     mysql_container:
     # 数据库备份文件导出的本地路径, 需要保证存在该文件夹
     sql_data_file: ./backup_sqls/
-
-
-
-

@@ -270,6 +270,7 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle，一个支�
        ![img_4.png](config/png/img_4.png)
         ![img_5.png](config/png/img_5.png)
         ![img_6.png](config/png/img_6.png)
+        ![img_11.png](config/png/img_11.png)
     
 
 

@@ -110,7 +110,10 @@ class Api_Request(Session):
             #res = self.request(method=method, url=url, files=file, headers=header, data=data)
             response=res.json()
         except Exception as e:
-            raise '请求发送失败：%s'%(e)
+            Logger.error('请求发送失败：%s'%((e)))
+            response={'response':str(e)}
+            #raise '请求发送失败：%s'%((e))
+
 
         Logger.info('返回响应：%s' % response)
 
