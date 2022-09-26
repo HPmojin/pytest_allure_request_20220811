@@ -1,52 +1,24 @@
-<!DOCTYPE html>
-
-
-<head>
 <meta charset="UTF-8">
-<title>${PROJECT_NAME}</title>
-</head>
+本邮件由系统自动发出，无需回复！<br/>
+各位领导，同事好，以下为<font color="#b4532a"><b>【${PROJECT_NAME}】</b></font>项目接口自动化测试概况如下：<br/>
+<font color="#b4532a"><b>执行成功率： ${_SUCCESS_RATE}</b></font><br/>
 
-<!--<body leftmargin="8" marginwidth="0" topmargin="8" marginheight="4"offset="0">-->
-<body leftmargin="8" marginwidth="0" topmargin="8" marginheight="4"offset="0">
+<b><font color="#0B610B">接口自动化测试概况：</font></b>
+<hr size="2" width="100%" align="center"/>
+<ul>
 
-    <table width="95%" cellpadding="0" cellspacing="0"  style="font-size: 11pt; font-family: Tahoma, Arial, Helvetica, sans-serif">
-        <tr>
-            本邮件由系统自动发出，无需回复！<br/>
-            各位领导，同事好，以下为<font color="#b4532a"><b>【${PROJECT_NAME}】</b></font>项目接口自动化测试概况!!!</br>
-            <td><font color="#b4532a"><b>执行成功率： ${_SUCCESS_RATE}</b></font></td>
-        </tr>
-        <tr>
-            <td><br />
-            <b><font color="#0B610B">接口自动化测试概况</font></b>
-            <hr size="2" width="100%" align="center" /></td>
-        </tr>
-        <tr>
-            <td>
-                                <ul>
+    <li><font color="#0c212b"><b>用例总数 ： ${_TOTAL}</b></font></li>
+    <li><font color="#1d953f"><b>通过用例数 ： ${_PASSED}</b></font></li>
+    <li><font color="#ffc20e"><b>异常用例数 ： ${_ERROR}</b></font></li>
+    <li><font color="#aa2116"><b>失败用例数： ${_FAILED}</b></font></li>
+    <li><font color="#8a8c8e"><b>跳过用例数： ${_SKIPPED}</b></font></li>
+    <li><font color="#1b315e"><b>用例执行时长： ${_TIMES}</b></font></li>
+    <li><font color="#b4532a"><b>用例成功率 ： ${_SUCCESS_RATE}</b></font></li>
+</ul>
 
-                    <li><font color="#0c212b"><b>用例总数 ： ${_TOTAL}</b></font></li>
-                    <li><font color="#1d953f"><b>通过用例数 ： ${_PASSED}</b></font></li>
-                    <li><font color="#ffc20e"><b>异常用例数 ： ${_ERROR}</b></font></li>
-                    <li><font color="#aa2116"><b>失败用例数： ${_FAILED}</b></font></li>
-                    <li><font color="#8a8c8e"><b>跳过用例数： ${_SKIPPED}</b></font></li>
-                    <li><font color="#1b315e"><b>用例执行时长： ${_TIMES}</b></font></li>
-                    <li><font color="#b4532a"><b>用例成功率 ： ${_SUCCESS_RATE}</b></font></li>
-                </ul>
+<b><font color="#0B610B">查看附件报告方法：</font></b>
+<hr size="2" width="100%" align="center"/>
+1.解压allure-report.zip(接口测试报告)后，进入解压目录，运行Start_server.bat（需要有python环境）<br/>
+2.出现“Serving HTTP on 0.0.0.0 port 5188 (http://0.0.0.0:5188/) ...”表示服务启动完成<br/>
 
-<h4><font color="#0B610B">查看附件报告方法</font></h4>
-<hr size="2" width="100%" />
-
-1.解压allure-report.zip(接口测试报告)后，进入解压目录，运行Start_server.bat（需要有python环境）
-<br/>
-2.出现“Serving HTTP on 0.0.0.0 port 5188 (http://0.0.0.0:5188/) ...”表示服务启动完成
-                <br/>
-3.浏览器输入 http://127.0.0.1:5188/allure-report 地址查看报告
-    <br/>
-                 <br/>
-<b>完成以上3步查看报告详情:</b> <a href="http://127.0.0.1:5188/allure-report">http://127.0.0.1:5188/allure-report</a><br/>
-
-            </td>
-        </tr>
-    </table>
-</body>
-</html>
+<b>完成以上2步查看报告详情:</b> <a href="http://127.0.0.1:5188/allure-report">http://127.0.0.1:5188/allure-report</a><br/>

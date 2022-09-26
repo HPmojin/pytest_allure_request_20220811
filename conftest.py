@@ -61,11 +61,12 @@ def pytest_terminal_summary(terminalreporter):
     Logger.error(f"异常用例数: {_ERROR}")
     Logger.error(f"失败用例数: {_FAILED}")
     Logger.warning(f"跳过用例数: {_SKIPPED}")
-    Logger.info("用例执行时长: %.2f" % _TIMES + " s")
+    Logger.info(f"用例执行时长: {round(_TIMES, 2)} s")
 
     try:
         _RATE = _PASSED / _TOTAL * 100
-        _SUCCESS_RATE="%.2f" % _RATE + " %"
+
+        _SUCCESS_RATE=round(_RATE, 2)
 
     except ZeroDivisionError:
         _SUCCESS_RATE="0.00"
@@ -77,7 +78,7 @@ def pytest_terminal_summary(terminalreporter):
         "_ERROR": f" {_ERROR}",
         "_FAILED": f" {_FAILED}",
         "_SKIPPED": f" {_SKIPPED}",
-        "_TIMES": "%.2f"% _TIMES + "s",
+        "_TIMES": f"{round(_TIMES, 2)} s",
         "_SUCCESS_RATE": f"{_SUCCESS_RATE}",
     }
     ExchangeData.post_pytest_summary(result_data_test)

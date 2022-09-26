@@ -16,17 +16,17 @@ dic_data={
         "username": "admin",
         "mobile": "12345678",
         "email": "adsfad@qq.com",
-        "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjowLCJpYXQiOjE2NjAxMjEyMDYsImV4cCI6MTY2MDIwNzYwNn0.el8d3Wj4vgqqsC33Ypwc18kcEoScuu228hOKnU1Dozw"
+        "token": "228hOKnU1Dozw"
     },
     "token": "Bea",
     "meta": {
         "msg": "登录成功",
         "status": 200,
-        "token": "Bearer eyJhbGciOiJIUz"
+        "token": "eyJhbGciOiJIUz"
     }
 }
 
-print(jsonpath.jsonpath(dic_data,"$.data.token")[0])
+print(jsonpath.jsonpath(dic_data,"$..token.[2]"))
 # extract_data={}
 #
 # josn_path_dic={"email": "$..email","token":"$.data.token","mobile":"$.data.mobile"}
