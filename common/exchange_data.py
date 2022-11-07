@@ -81,28 +81,50 @@ class ExchangeData():
             data=cls.extra_pool
             content = Template(content).safe_substitute(data)
 
-
             for func in re.findall('\\${(.*?)}', content):#${fk.random_int(min=1000,max=9999)   ${sdsd()}
                 #Logger.error(func)
-
                 try:
                     content = content.replace('${%s}' % func, cls.exec_func(func))
                 except Exception as e:
                     Logger.error(str(e))
-        else:
-            if content=="":
-                content="{}"
-            elif eval(content) =={}:
-                content = content
 
+        #后面两种写法
+
+        #第一中
+        # else: #如果为空，
+        #     if content=="": #如果输入的空字符串格式，强制转为空字典，统一格式后面转字典
+        #         content="{}" #强制转为空字典格式的字符串类型
+        #     elif eval(content) =={}: #判断是否为空字典的格式的字符串，也就是 判断是否为  “{}”
+        #         content = content
+        #       #在这 content已经统一为字典格结构格式的字符串类型了
+        #
+        # if return_type=="srt":  #判断返回类型为字符串
+        #     content=(content)  #直接赋值不用再转换类型
+        # elif return_type=="dict" :  #判断返回类型为字典
+        #     try:#尝试转为字典类型
+        #         content = eval(content) #“{}”转成功了{} 则 ：“{}”  字典结构格式的字符串转为字典 eval()
+        #     except Exception as e:#字符串类型转字典，抛异常的
+        #         Logger.warning("Excle输入的字符串格式，不能转为字典类型!!!(%s)"%str(e))
+        #         raise Exception("Excle输入的字符串格式，不能转为字典类型!!!(%s)"%str(e))
+
+        #第二中
+        else: #如果为空，
+            pass  #如果为空，则content=content 或pass(这两种一样的性质)
+        #判断返回类型
         if return_type=="srt":
             content=(content)
-        elif return_type=="dict" :
-            content=eval(content)
+        elif return_type=="dict" :#如果返回为字典
+            if  content=="":#判断是否为值
+                content = "{}"#为空值赋值字符串类的空字典
 
-
+            try:#尝试转为字典类型
+                content = eval(content) #“{}”转成功了{}
+            except Exception as e:#字符串格式转字典，抛异常的
+                Logger.warning("Excle输入的字符串格式，不能转为字典类型， 请检查参数!!!(%s)"%str(e))
+                raise Exception("Excle输入的字符串格式，不能转为字典类型，请检查参数!!!(%s)"%str(e))
 
         return content
+
 
     @classmethod
     def extra_pool_allure(cls):
