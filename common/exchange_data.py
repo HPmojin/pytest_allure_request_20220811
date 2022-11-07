@@ -12,10 +12,11 @@ import jsonpath,re,allure,json
 from faker import Faker
 from string import Template
 from common.logger import Logger
+from common.hook import uuid4,fk       #或  from common.hook import *
 #from common.read_file import ReadFile
 
-
-fk = Faker("zh_CN") # https://blog.csdn.net/weixin_43865008/article/details/115492280
+#
+# fk = Faker("zh_CN") # https://blog.csdn.net/weixin_43865008/article/details/115492280
 
 class ExchangeData():
 
