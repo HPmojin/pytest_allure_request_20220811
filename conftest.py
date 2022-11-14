@@ -17,6 +17,30 @@ from common.Bak_Rec_DB import BakRecDB
 from common.read_file import ReadFile
 
 
+#命令行传参addoption 在contetest.py添加命令行选项,命令行传入参数”—cmdopt“, 用例如果需要用到从命令行传入的参数，就调用cmdopt函数：
+def pytest_addoption(parser):
+    parser.addoption("--env", action="store", default="test", help=None)
+
+
+@pytest.fixture(scope='session')
+def cmdopt(pytestconfig):
+    # 两种写法
+
+    #global parameter_data
+    parameter_data=(pytestconfig.getoption("--env"))
+    return parameter_data
+    # return pytestconfig.option.cmdopt
+
+
+@pytest.fixture(scope='session')
+def env_url(cmdopt):#读取数据源文件
+
+
+
+    url = ReadFile.read_config('$..%s'%cmdopt)
+
+    return url
+
 @pytest.fixture(scope='session')  #读取数据库查询断言
 def get_db():
 

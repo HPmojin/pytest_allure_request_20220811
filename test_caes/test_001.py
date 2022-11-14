@@ -20,12 +20,12 @@ Sheet=operation_excle.read_excel(ReadFile.read_config('$..test_case'), ReadFile.
 class Test():
 
     @pytest.mark.parametrize("case",Sheet)
-    # def test_001(self,case,get_db):#,get_db
-    def test_001(self, case):  # ,get_db
+    # def test_001(self,case,get_db,env_url):#,get_db
+    def test_001(self, case,env_url):  # ,get_db
         # 需要执行sql查询断言时，参数中添加get_db
         # 不需要执行sql查询断言时，参数中去掉get_db
 
-        response=(Api_Request.api_data(case))
+        response=(Api_Request.api_data(case,env_url))
 
         # 需要执行sql查询断言时，参数中添加get_db
         # 不需要执行sql查询断言时，参数中去掉get_db

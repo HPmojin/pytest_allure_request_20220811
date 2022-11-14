@@ -24,7 +24,7 @@ def run():
     except:
         pass
 
-    pytest.main(['./test_caes','-vs',"--alluredir","target/allure-results"])#pytest测试框架主程序运行
+    pytest.main(['./test_caes','-vs',"--env=test","--alluredir","target/allure-results"])#pytest测试框架主程序运行
     allure_html = 'allure generate ./target/allure-results -o ./target/allure-report --clean'  # 生成allure的html报告
     subprocess.call(allure_html, shell=True)  # 生成allure的html报告
 

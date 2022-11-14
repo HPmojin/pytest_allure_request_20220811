@@ -17,7 +17,7 @@ from common.condition import Condition
 class Api_Request(Session):
 
     @classmethod
-    def api_data(cls,cases):
+    def api_data(cls,cases,env_url):
         Condition().skip_if(cases)
 
         allure.dynamic.title(cases[1])
@@ -30,7 +30,7 @@ class Api_Request(Session):
 
 
 
-        url=ReadFile.read_config('$..dev')
+        # url=ReadFile.read_config('$..dev')
         #url="http://192.168.1.10:8888/api/private/v1/"
         (
             case_id,
@@ -56,7 +56,7 @@ class Api_Request(Session):
         file_obj=ExchangeData.rep_expr(file_obj,return_type='dict')
         Logger.info(case_title)
 
-        res=Api_Request().api_request("%s/%s"%(url,path),method,parametric_key,header_ex,(data),file_obj)
+        res=Api_Request().api_request("%s/%s"%(env_url,path),method,parametric_key,header_ex,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
 
