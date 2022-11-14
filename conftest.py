@@ -106,3 +106,11 @@ def pytest_terminal_summary(terminalreporter):
         "_SUCCESS_RATE": f"{_SUCCESS_RATE}",
     }
     ExchangeData.post_pytest_summary(result_data_test)
+    with open("result.txt", "w") as fp:#测试结果保存到本地result.txt
+        fp.write("_TOTAL=%s" % _TOTAL + "\n")
+        fp.write("_PASSED=%s" % _PASSED + "\n")
+        fp.write("_FAILED=%s" % _FAILED + "\n")
+        fp.write("_ERROR=%s" % _ERROR + "\n")
+        fp.write("_SKIPPED=%s" % _SKIPPED + "\n")
+        fp.write("_SUCCESS_RATE=%.2f%%" % _SUCCESS_RATE + "\n")
+        fp.write("_TIMES=%.2fs" % _TIMES)
