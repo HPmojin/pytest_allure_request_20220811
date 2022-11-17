@@ -41,7 +41,7 @@ class BakRecDB(RemoteServe):
             'mysqldump -h127.0.0.1 -uroot -proot mydb > /usr/local/mysql8/mydbDataBackup/mydb_bak.sql', docs='备份当前数据库'))  # 备份当前数据库数据
 
         (self.execute_cmd('mysql -h127.0.0.1 -uroot -proot mydb < /mnt/backup_sql/mydb.sql', docs='恢复上传sql库数据'))  # 恢复上传数据库数据
-
+        self.ssh_close()
 
 
 

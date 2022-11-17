@@ -9,6 +9,12 @@ server:
   prod: http://127.0.0.1:8888/api/private/v1
 
 
+Operations_db: # 操作数据库
+  assert_db: False  #  True  启用数据库查询断言   False  不启用
+  backup: False   #启动测试前启动备份数据库  数据库服务器 linux适用，windows不适用
+  recovery: False  #测试完成后恢复备份数据库  数据库服务器 linux适用，windows不适用
+
+
 severity:
   case_severity: ["P1","P2","P3","P4"]#用例等级 "["P1","P2","P3","P4","P5"]"  设置需要测试用例等级
   cor_rel_case_severity: #用例等级和allure报告优先级的对应关系
@@ -17,12 +23,6 @@ severity:
     P3: normal
     P4: minor
     P5: trivial
-
-
-
-
-
-
 
 # 基准的请求头信息
 request_headers: {'Authorization': ''}

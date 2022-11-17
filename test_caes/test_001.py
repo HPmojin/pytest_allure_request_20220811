@@ -19,18 +19,12 @@ class Test():
 
     @pytest.mark.parametrize("case",get_yaml_excle_caes())
     @allure.step
-    # def test_001(self,case,get_db):#,get_db
-    def test_001(self, case,env_url):  # ,get_db
-        # 需要执行sql查询断言时，参数中添加get_db
-        # 不需要执行sql查询断言时，参数中去掉get_db
-
+    def test_001(self,case,get_db,env_url):
 
         response=(Api_Request.api_data(case,env_url))
 
-        # 需要执行sql查询断言时，参数中添加get_db
-        # 不需要执行sql查询断言时，参数中去掉get_db
-        # assert AssertApi().assert_api(response,case,get_db)#,get_db
-        assert AssertApi().assert_api(response, case)  # ,get_db
+        assert AssertApi().assert_api(response,case,get_db)
+
 
 
 
