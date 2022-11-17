@@ -19,9 +19,10 @@ class AssertApi():
         ExchangeData.extra_pool_allure()  # 显示参数池数
         expect=case[-1]
         result_all=[]#多个断言结果列表 True False
-        if type(response) !=dict: #判断返回值不为字典格式
-            response={"response":response}
         result_dic_list=[]
+        if type(response) !=dict:
+            response={"response":response}
+        Logger.info(response)
         self.re_sql_data.update(response)
         Logger.info(self.re_sql_data)
 
@@ -32,7 +33,9 @@ class AssertApi():
                 # Logger.info(v)
                 # actual_results=(jsonpath.jsonpath(response, k)[0])#实际结果
                 #k = ExchangeData.rep_expr(k, return_type='srt')
-                #v = ExchangeData.rep_expr(v, return_type='srt')
+
+                #Logger.warning(v)
+
                 real_k = ExchangeData.Extract_noe(self.re_sql_data,k)
                 real_v = ExchangeData.Extract_noe(self.re_sql_data, v)
 

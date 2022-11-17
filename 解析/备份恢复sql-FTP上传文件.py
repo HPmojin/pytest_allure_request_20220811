@@ -16,8 +16,8 @@ port=22
 username='root'
 password='root'
 
-trans = paramiko.Transport((host, port))
-trans.connect(username=username, password=password,)
+trans = paramiko.Transport((host, port))  # 实例化一个transport对象
+trans.connect(username=username, password=password,) #连接transport
 
 
 ftp = paramiko.SFTPClient.from_transport(trans)  # 实例化一个ftp

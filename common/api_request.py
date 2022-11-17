@@ -9,28 +9,27 @@
 #-------------------------------------------------------------------------------
 
 from requests import Session
+import requests
 from common.logger import Logger
 from common.exchange_data import ExchangeData
 import allure,json
 from common.read_file import ReadFile
 from common.condition import Condition
-class Api_Request(Session):
+from requests_toolbelt import MultipartEncoder
+
+class Api_Request():
+
 
     @classmethod
     def api_data(cls,cases,env_url):
+        allure.dynamic.story(cases[0])
+        del cases[0]
+
         Condition().skip_if(cases)
-
-        allure.dynamic.title(cases[1])
-        allure.dynamic.story(cases[-1])
-        del cases[-1]
-
-
         allure.dynamic.severity(ReadFile.read_config('$..cor_rel_case_severity')[cases[4]])
 
 
-
-
-        # url=ReadFile.read_config('$..dev')
+        request_headers=(ReadFile.read_config('$.request_headers')) #获取配置文件中的请求头
         #url="http://192.168.1.10:8888/api/private/v1/"
         (
             case_id,
@@ -49,14 +48,41 @@ class Api_Request(Session):
         ) = cases
 
         # a,b=1,2
-
+        case_title=ExchangeData.rep_expr(case_title,return_type='srt')
         path=ExchangeData.rep_expr(path,return_type='srt')
         header_ex=ExchangeData.rep_expr(header_ex,return_type='dict')
         data=ExchangeData.rep_expr(data,return_type='dict')
         file_obj=ExchangeData.rep_expr(file_obj,return_type='dict')
-        Logger.info(case_title)
 
-        res=Api_Request().api_request("%s/%s"%(env_url,path),method,parametric_key,header_ex,(data),file_obj)
+        request_headers.update(header_ex)#配置文件中的请求头和获取excel请求头合并
+
+        #
+        # if file_obj!="":
+        #     file_name = (file_obj.split('\\')[-1])
+        #     Suffix = file_name.split('.')[-1].lower()
+        #     if Suffix in ['jpeg', 'jpg', 'png']:
+        #         file_type = "image/%s" % Suffix
+        #     elif Suffix in ['mp4', ]:
+        #         file_type = "video/%s" % Suffix
+        #     else:
+        #         file_type = "image/%s" % Suffix
+        #     data=MultipartEncoder(
+        #         fields={
+        #             "file": (file_name,
+        #                      open("%s\%s"%(images_Path,file_obj), 'rb'),
+        #                      file_type)
+        #         }
+        #     )
+        #     request_headers["Content-Type"] = data.content_type
+
+
+        Logger.info(case_title)
+        allure.dynamic.title(case_title)
+        allure.dynamic.description("【用例名称】：%s\n\n【请求地址】：%s%s\n\n【请求参数】：%s"%(case_title,env_url,path,data))
+        #allure.dynamic.link('%s%s'%(env_url,path), name='%s%s'%(env_url,path))  # 关联的连接
+
+
+        res=Api_Request().api_request("%s/%s"%(env_url,path),method,parametric_key,request_headers,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
 
@@ -82,13 +108,16 @@ class Api_Request(Session):
         else:
             raise ValueError("“parametric_key”的可选关键字为params, json, data")
 
-
+        if file!="":
+            data_=str(data)
+        else:
+            data_=data
         req_info = {
             "请求地址": url,
             "请求头": header,
             "请求方法": method,
             '参数类型':parametric_key,
-            "请求数据": data,
+            "请求数据": data_,
             "上传文件": str(file),
         }
         with allure.step('请求数据：'):
@@ -106,9 +135,12 @@ class Api_Request(Session):
         Logger.info('请求参数：%s' % data)
         Logger.info('上传文件：%s' % file)
         try:
-            res = self.request(method=method, url=url, files=file, headers=header, **parametric)
-            #res = self.request(method=method, url=url, files=file, headers=header, data=data)
-            response=res.json()
+
+            res = requests.request(method=method, url=url,  headers=header,files=file, **parametric)#files=file,
+            # res = self.request(method=method, url=url, files=file, headers=header, data=data)
+            response = res.json()
+
+
         except Exception as e:
             Logger.error('请求发送失败：%s'%((e)))
             response={'response':str(e)}

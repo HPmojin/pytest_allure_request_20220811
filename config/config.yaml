@@ -30,10 +30,20 @@ request_headers: {'Authorization': ''}
 # 基准存放提取参数的池子
 extra_pool: {"token":''}
 
+test_case_type:  # 用例读取的来源  为True读取文件类型，为False不读取,如excel 和yaml都为True时 读取累加
+  - read: True  #  True  读取   False  不读取
+    test_case: ./data/case_data.xlsx
+    file: xlsx
+    order: 1   #顺序
 
+  - read: True  #  True  False
+    test_case: ./data/case_yaml/
+    file: yaml
+    order: 0  #顺序
 
 file_path:
-  test_case: ./data/case_data.xlsx
+  test_case_xlsx: ./data/case_data.xlsx
+  test_case_yaml: ./data/case_yaml/
   report: target/
   log: log/run{time}.log
 

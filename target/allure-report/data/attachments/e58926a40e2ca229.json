@@ -1,9 +1,0 @@
-{
-    "提取路径": [
-        "$...username",
-        "$..sql_0_data.mg_name"
-    ],
-    "实际结果": "admin",
-    "预期结果": "admin",
-    "测试结果": true
-}

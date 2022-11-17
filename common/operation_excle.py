@@ -44,8 +44,10 @@ class operation_excle:
                     #print(cell.value)
                     row_list.append(cell_srt)
 
-                row_list.append(title)
-                if row_list[4] in case_severity_list:#筛选匹配的用例等级进行测试
+                #row_list.append(title)
+                row_list.insert(0,title)
+
+                if row_list[5] in case_severity_list:#筛选匹配的用例等级进行测试
 
                     rows_list.append(row_list)
             #print(rows_list)
@@ -57,9 +59,9 @@ class operation_excle:
             for j in range(len(rows_list[0])):
                 row_dict[rows_list[0][j]] = rows_list[i + 1][j]
             result.append(row_dict)
-        print(result)
+
         #return result#返回字典形式
-        #print(rows_list)
+
         return rows_list  # 返回列表形式
 
 

@@ -21,7 +21,7 @@ class ReadFile:
     config_path = f"{str(Path(__file__).parent.parent)}/config/config.yaml"
 
     @classmethod
-    def get_config_dict(cls) -> dict:
+    def get_config_dict(cls,) -> dict:
         """读取配置文件，并且转换成字典
         return cls.config_dict
         """
@@ -32,12 +32,22 @@ class ReadFile:
         return cls.config_dict
 
     @classmethod
+    def get_case_data_yaml(cls,case_data_yaml) -> dict:
+        """读取配置文件，并且转换成字典
+        return cls.config_dict
+        """
+        with open(case_data_yaml, "r", encoding="utf-8") as file:
+            data_yaml_dict = yaml.load(file.read(), Loader=yaml.FullLoader)
+
+        return data_yaml_dict
+
+
+    @classmethod
     def read_config(cls, expr: str = ".") -> dict:
         """默认读取config目录下的config.yaml配置文件，根据传递的expr jsonpath表达式可任意返回任何配置项
         :param expr: 提取表达式, 使用jsonpath语法,默认值提取整个读取的对象
         return 根据表达式返回的值
         """
-
         return ExchangeData.Extract_noe(cls.get_config_dict(), expr)
 
 

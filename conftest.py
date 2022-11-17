@@ -17,10 +17,10 @@ from common.Bak_Rec_DB import BakRecDB
 from common.read_file import ReadFile
 
 
+
 #命令行传参addoption 在contetest.py添加命令行选项,命令行传入参数”—cmdopt“, 用例如果需要用到从命令行传入的参数，就调用cmdopt函数：
 def pytest_addoption(parser):
     parser.addoption("--env", action="store", default="test", help=None)
-
 
 @pytest.fixture(scope='session')
 def cmdopt(pytestconfig):
@@ -31,15 +31,13 @@ def cmdopt(pytestconfig):
     return parameter_data
     # return pytestconfig.option.cmdopt
 
-
 @pytest.fixture(scope='session')
 def env_url(cmdopt):#读取数据源文件
-
-
-
     url = ReadFile.read_config('$..%s'%cmdopt)
 
     return url
+
+
 
 @pytest.fixture(scope='session')  #读取数据库查询断言
 def get_db():
@@ -73,20 +71,18 @@ def pytest_terminal_summary(terminalreporter):
     """
     收集测试结果
     """
-
     _PASSED = len([i for i in terminalreporter.stats.get('passed', []) if i.when != 'teardown'])
     _ERROR = len([i for i in terminalreporter.stats.get('error', []) if i.when != 'teardown'])
     _FAILED = len([i for i in terminalreporter.stats.get('failed', []) if i.when != 'teardown'])
     _SKIPPED = len([i for i in terminalreporter.stats.get('skipped', []) if i.when != 'teardown'])
     _TOTAL = terminalreporter._numcollected
     _TIMES = time.time() - terminalreporter._sessionstarttime
-    Logger.error(f"用例总数: {_TOTAL}")
+    Logger.info(f"用例总数: {_TOTAL}")
     Logger.success(f"通过用例: {_PASSED}")
     Logger.error(f"异常用例数: {_ERROR}")
     Logger.error(f"失败用例数: {_FAILED}")
     Logger.warning(f"跳过用例数: {_SKIPPED}")
     Logger.info(f"用例执行时长: {round(_TIMES, 2)} s")
-
     try:
         _RATE = _PASSED / _TOTAL * 100
 
@@ -94,7 +90,6 @@ def pytest_terminal_summary(terminalreporter):
 
     except ZeroDivisionError:
         _SUCCESS_RATE="0.00"
-
     Logger.info(f"用例成功率:{_SUCCESS_RATE}")
     result_data_test={
         "_TOTAL": f"{_TOTAL}",
@@ -105,7 +100,7 @@ def pytest_terminal_summary(terminalreporter):
         "_TIMES": f"{round(_TIMES, 2)} s",
         "_SUCCESS_RATE": f"{_SUCCESS_RATE}",
     }
-    ExchangeData.post_pytest_summary(result_data_test)
+    ExchangeData.post_pytest_summary(result_data_test)#测试结果添加到变量池
     with open("result.txt", "w") as fp:#测试结果保存到本地result.txt
         fp.write("_TOTAL=%s" % _TOTAL + "\n")
         fp.write("_PASSED=%s" % _PASSED + "\n")
@@ -114,3 +109,4 @@ def pytest_terminal_summary(terminalreporter):
         fp.write("_SKIPPED=%s" % _SKIPPED + "\n")
         fp.write("_SUCCESS_RATE=%.2f%%" % _SUCCESS_RATE + "\n")
         fp.write("_TIMES=%.2fs" % _TIMES)
+
