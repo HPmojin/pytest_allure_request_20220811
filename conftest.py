@@ -46,8 +46,11 @@ def get_db():
         db=DB()
     else:
         db=None
+
     yield db
-    db.close()
+
+    if assert_db:#判断是否查询数据库断言
+        db.close()
 
 
 
