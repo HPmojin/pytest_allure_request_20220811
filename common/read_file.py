@@ -43,7 +43,7 @@ class ReadFile:
 
 
     @classmethod
-    def read_config(cls, expr: str = ".") -> dict:
+    def read_config(cls, expr: str = ".") -> str:
         """默认读取config目录下的config.yaml配置文件，根据传递的expr jsonpath表达式可任意返回任何配置项
         :param expr: 提取表达式, 使用jsonpath语法,默认值提取整个读取的对象
         return 根据表达式返回的值
