@@ -5,7 +5,7 @@
 # @Time    : 2022/11/19 20:12
 # @Author  : mojin
 # @Email   : 397135766@qq.com
-# @File    : 23424.py
+# @File    : read_exce_yaml_caes.py
 # @Software: PyCharm
 # -------------------------------------------------------------------------------
 
@@ -42,8 +42,13 @@ def get_excle_all_caes(excle_file):#获取excle文件中的所有用例
 
     all_excle_case = []  # 收集所有用例
     for one_excle_path in excle_path_all:
-        one_excle_case = operation_excle.read_excel(one_excle_path,
-                                                    ReadFile.read_config('$..case_severity'))
+
+        try:
+            one_excle_case = operation_excle.read_excel(one_excle_path,
+                                                        ReadFile.read_config('$..case_severity'))
+        except Exception as e:
+            Logger.warning('这个文件【%s】无法读取,原因:“%s”,关闭excle再试试…… '%(one_excle_path,e))
+            one_excle_case=[]
         all_excle_case=all_excle_case+one_excle_case
 
 
