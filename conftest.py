@@ -10,7 +10,7 @@
 
 from common.db import DB
 from common.exchange_data import ExchangeData
-import pytest
+import pytest,random
 import pytest,time
 from common.logger import Logger
 from common.Bak_Rec_DB import BakRecDB
@@ -33,7 +33,7 @@ def cmdopt(pytestconfig):
 
 @pytest.fixture(scope='session')
 def env_url(cmdopt):#读取数据源文件
-    url = ReadFile.read_config('$..%s'%cmdopt)
+    url = ReadFile.read_config('$..%s'%cmdopt)#  $..test
 
     return url
 
@@ -121,4 +121,6 @@ def pytest_terminal_summary(terminalreporter):
         fp.write("_SKIPPED=%s" % _SKIPPED + "\n")
         fp.write("_SUCCESS_RATE=%.2f%%" % _SUCCESS_RATE + "\n")
         fp.write("_TIMES=%.2fs" % _TIMES)
-
+#
+# def pytest_itemcollected(item):#要不要这个函数都行 不用需要再用例的历史中看 ，  使用这个函数 所有执行全部显示处理
+#     item._nodeid = str(random.randint(1, 1000)) + '_' + item . _nodeid

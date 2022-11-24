@@ -12,7 +12,7 @@ from requests import Session
 import requests
 from common.logger import Logger
 from common.exchange_data import ExchangeData
-import allure,json
+import allure,json,re
 from common.read_file import ReadFile
 from common.condition import Condition
 from requests_toolbelt import MultipartEncoder
@@ -81,8 +81,14 @@ class Api_Request():
         allure.dynamic.description("【用例名称】：%s\n\n【请求地址】：%s%s\n\n【请求参数】：%s"%(case_title,env_url,path,data))
         #allure.dynamic.link('%s%s'%(env_url,path), name='%s%s'%(env_url,path))  # 关联的连接
 
+        import  re
+        pattern = re.compile(r'^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+')
+        if (pattern.search(path)) == None:  # 判断读取的地址是否有前缀地址http://192.168.1.153:8562
+            urls ="%s/%s"%(env_url,path)  # 无前缀读取配置文件添加前缀
+        else:
+            urls = path  # 有前缀使用读取的完整地址
 
-        res=Api_Request().api_request("%s/%s"%(env_url,path),method,parametric_key,request_headers,(data),file_obj)
+        res=Api_Request().api_request(urls,method,parametric_key,request_headers,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
 
