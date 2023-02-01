@@ -32,12 +32,13 @@ class AssertApi():
         ExchangeData.extra_pool_allure()  # 显示参数池数
         Logger.info('提取参数路径：%s' % extra)
         Logger.info('参数池：%s' % ExchangeData.extra_pool)
-
+        Logger.info('断言内容：%s' % expectlist)
         if expectlist != "" and expectlist != "{}":
 
             n = 1
 
             expectlist = ExchangeData.rep_expr(expectlist, return_type='dict')
+            Logger.info('变量引用后的断言内容：%s' % expectlist)
             for expect_jsonpath in (expectlist):
                 # Logger.info((jsonpath.jsonpath(response, k)[0]))
                 # Logger.info(v)
@@ -58,6 +59,7 @@ class AssertApi():
 
 
                 loc = locals()
+                msg=''
                 try:
 
                     if date_type_ch=='str':
@@ -69,7 +71,9 @@ class AssertApi():
                     result=(loc['asser_results'])
                 except Exception as e:
                     Logger.error("断言异常：%s（请检查数据类型……）"%e)
-                    raise "断言异常：%s"%e
+                    result = False
+                    msg="[%s]"%e
+                    #raise "断言异常：%s"%e
 
 
 
@@ -81,7 +85,7 @@ class AssertApi():
                         "预期结果": Expected_ch,
                         "断言类型": AssertType_ch,
                         "实际结果": Actual_ch,
-                        "测试结果": result
+                        "测试结果": '%s %s'%(result,msg)
                         }
                 result_all.append(result)
                 result_dic_list.append(result_dic)
