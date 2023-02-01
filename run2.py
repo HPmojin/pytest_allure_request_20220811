@@ -12,7 +12,7 @@
 import requests
 from requests_toolbelt import MultipartEncoder
 def hy_files():
-    url='https://peach-test.hjgpscm.com/_files/upload?accessType=2' # 传图片
+    url='https://****************.com/_files/upload?accessType=2' # 传图片
     headers={
         "authorization": "kktJLMPhAtduLA0Jl5dXqull5LtuDGmM9saoDkA++meJ/XaV2KFYWFi4wLU5HHoIPcSCL/fGiMfit8sXwMRu5QUgHqeMcYOT2eoJDwqfLukzLN49oMJZusDgJ9RzhvpG",
         "peachauthversioncode": "9",
