@@ -10,40 +10,55 @@
 
 from common.db import DB
 from common.exchange_data import ExchangeData
-import pytest,random
+import pytest,random,os
 import pytest,time
 from common.logger import Logger
 from common.Bak_Rec_DB import BakRecDB
 from common.read_file import ReadFile
+from common.read_exce_yaml_caes import get_yaml_excle_caes
 
 
+cmdopt_env=''
 
 #命令行传参addoption 在contetest.py添加命令行选项,命令行传入参数”—cmdopt“, 用例如果需要用到从命令行传入的参数，就调用cmdopt函数：
 def pytest_addoption(parser):
     parser.addoption("--env", action="store", default="test", help=None)
 
-@pytest.fixture(scope='session')
-def cmdopt(pytestconfig):
+@pytest.fixture(scope='session',autouse=True)
+def Acmdopt(pytestconfig):
     # 两种写法
 
-    #global parameter_data
-    parameter_data=(pytestconfig.getoption("--env"))
-    return parameter_data
+    global  Acmdopt_env
+
+    Acmdopt_env=pytestconfig.getoption("--env")
+
+    os.environ["Acmdopt_env"] = Acmdopt_env  # 写入系统变量
+
+    return Acmdopt_env
     # return pytestconfig.option.cmdopt
 
-@pytest.fixture(scope='session')
-def env_url(cmdopt):#读取数据源文件
-    url = ReadFile.read_config('$..%s'%cmdopt)#  $..test
+@pytest.fixture(scope='session',autouse=True)
+def env_url(Acmdopt):#读取数据源文件
+    url = ReadFile.read_config('$.server.%s'%Acmdopt)#  $..test
+    Logger.warning('执行环境为：【%s】 %s' %(Acmdopt_env,url))
 
     return url
 
 
 
 @pytest.fixture(scope='session')  #读取数据库查询断言
-def get_db():
+def get_db(Acmdopt):
     assert_db = ReadFile.read_config('$.Operations_db.assert_db')
+    mysql = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
     if assert_db:#判断是否查询数据库断言
-        db=DB()
+        db=DB(
+        host=str(mysql['host']),
+        port=int(mysql['port']),
+        user=str(mysql['user']),
+        password=str(mysql['password']),
+        db=mysql['db_name'],
+        charset=mysql.get('charset', 'utf8mb4'),
+    )
     else:
         db=None
 
@@ -57,26 +72,50 @@ def get_db():
 
 #备份恢复数据库
 @pytest.fixture(scope='session',autouse=True)#False True   autouse=False 为True时开启数据库备份恢复功能，为False时不开启备份恢复功能
-def ConnectingRemoteServices():
+def ConnectingRemoteServices(Acmdopt):
     #获取配置文件中的远程服务器和数据库参数
-    host = ReadFile.read_config('$.database.host')
-    ssh_port = ReadFile.read_config('$.database.ssh_server.port')
-    ssh_user = ReadFile.read_config('$.database.ssh_server.username')
-    ssh_pwd = ReadFile.read_config('$.database.ssh_server.password')
-    sql_data_file = ReadFile.read_config('$.database.ssh_server.sql_data_file')
+    ssh_server = dict(ReadFile.read_config('$.ssh_server.%s'%Acmdopt))
+    mysql_info = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
+    ssh_host = ssh_server['host']
+    ssh_port = ssh_server['port']
+    ssh_user = ssh_server['username']
+    ssh_pwd = ssh_server['password']
+    sql_data_file = ssh_server['sql_data_file']
+    sql_upload_file=ssh_server['sql_upload_file']
 
     backup_db = ReadFile.read_config('$.Operations_db.backup')
 
     if backup_db:
-        BR = BakRecDB(host=host, port=ssh_port, username=ssh_user, password=ssh_pwd)  # 初始化链接服务器
+        BR = BakRecDB(host=ssh_host, port=ssh_port, username=ssh_user, password=ssh_pwd,mysql_info=mysql_info,sql_data_file=sql_data_file,sql_upload_file=sql_upload_file)  # 初始化链接服务器
         BR.backups_sql()  # 链接ssh远程访问，上传测试sql数据，备份当前数据库，导入测试sql库，
+        BR.ssh_close()
 
     yield
 
     recovery_db = ReadFile.read_config('$.Operations_db.recovery')
     if recovery_db:
-        BR = BakRecDB(host=host, port=ssh_port, username=ssh_user, password=ssh_pwd)  # 初始化链接服务器
+        BR = BakRecDB(host=ssh_host, port=ssh_port, username=ssh_user, password=ssh_pwd,mysql_info=mysql_info,sql_data_file=sql_data_file,sql_upload_file=sql_upload_file)  # 初始化链接服务器
         BR.recovery_sql()  # 恢复测试前sql数据，关闭ssh链接
+        BR.ssh_close()
+
+
+##@pytest.fixture(scope='session')#False True   autouse=False
+def read_cases(Acmdopt):
+    global data
+    data=get_yaml_excle_caes(Acmdopt)
+    Logger.info(data)
+
+    return data
+#cmdopt_env='test'
+
+#@pytest.fixture(params=get_yaml_excle_caes(os.getenv("Acmdopt_env")))
+def cases(request,Acmdopt):
+    """用例数据，测试方法参数入参该方法名 cases即可，实现同样的参数化
+    目前来看相较于@pytest.mark.parametrize 更简洁。
+
+    """
+    Logger.info(request.param)
+    return request.param
 
 
 def pytest_terminal_summary(terminalreporter):

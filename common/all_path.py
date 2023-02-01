@@ -17,3 +17,4 @@ reportsPath = os.path.join(base_path, 'target', 'allure-report')
 screenPath = os.path.join(base_path,  'screencap')
 targetPath=os.path.join(base_path, 'target')
 Start_server_bat=os.path.join(base_path, 'config',"Start_server.bat")
+images_Path=os.path.join(base_path, 'config',"png") #./config/png

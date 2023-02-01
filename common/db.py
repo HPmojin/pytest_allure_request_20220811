@@ -19,23 +19,38 @@ from common.read_file import ReadFile
 
 
 class DB:
-    mysql = ReadFile.read_config('$.database')
 
 
-    def __init__(self):
+
+    def __init__(self ,host,
+            port,
+            user,
+            password,
+            db,
+            charset='utf8mb4',
+            ):
         """
         初始化数据库连接，并指定查询的结果集以字典形式返回
         """
-
-        self.connection = pymysql.connect(
-            host=str(self.mysql['host']),
-            port=int(self.mysql['port']),
-            user=str(self.mysql['user']),
-            password=str(self.mysql['password']),
-            db=self.mysql['db_name'],
-            charset=self.mysql.get('charset', 'utf8mb4'),
-            cursorclass=pymysql.cursors.DictCursor
-        )
+        self.host=host
+        self.port=port
+        self.user=user
+        self.password=password
+        self.db=db
+        self.charset=charset
+        try:
+            self.connection = pymysql.connect(
+                host=self.host,
+                port=self.port,
+                user=self.user,
+                password=self.password,
+                db=self.db,
+                charset=self.charset,
+                cursorclass=pymysql.cursors.DictCursor
+            )
+        except Exception as e:
+            Logger.error("数据库链接失败！！（%s）"%e)
+            raise
 
     def execute_sql(self, sql: str) -> Union[dict, None]:
         """
@@ -55,7 +70,7 @@ class DB:
             except Exception as e:
                 Logger.error('数据库查询数据出错！！（%s）'%str(e))
                 #result={'error':str(e)}
-                result =None
+                result = {}
 
 
             # 使用commit解决查询数据出现概率查错问题

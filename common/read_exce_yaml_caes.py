@@ -55,9 +55,12 @@ def get_excle_all_caes(excle_file):#获取excle文件中的所有用例
     return all_excle_case
 
 def get_yaml_excle_caes():# get_all_yaml_excle_caes  #获取yaml和excle用例，用例；yaml和excle累计所有
-    test_case_type = (ReadFile.read_config('$.test_case_type'))
+    cmdopt_env='test'
+    test_case_type = (ReadFile.read_config('$.test_case_type.%s'%cmdopt_env))
+    #test_case_type = (ReadFile.read_config('$.test_case_type' ))
 
     test_case_type = sorted(test_case_type, key=lambda test_case_type: test_case_type['order'], reverse=False)
+
     all_yaml_xlsx_caes = []
     for case_type in test_case_type:
         if case_type["read"]:

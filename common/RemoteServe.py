@@ -40,36 +40,43 @@ class RemoteServe:
         private_password = None,
     ):
 
-
-        # 进行SSH连接
-        self.trans = paramiko.Transport((host, port))
-        self.host = host
-        if password is None:
-            self.trans.connect(
-                username=username,
-                pkey=paramiko.RSAKey.from_private_key_file(
-                    private_key_file, private_password
-                ),
-            )
-        else:
-            self.trans.connect(username=username, password=password,)
-        # 将sshclient的对象的transport指定为以上的trans
-        self.ssh = paramiko.SSHClient()
-        Logger.info("SSH客户端创建成功.")
-        self.ssh._transport = self.trans
-        # 创建SFTP客户端
-        self.ftp_client = paramiko.SFTPClient.from_transport(self.trans)
-        Logger.info("SFTP客户端创建成功.")
+        try:
+            # 进行SSH连接
+            self.trans = paramiko.Transport((host, port))
+            self.host = host
+            if password is None:
+                self.trans.connect(
+                    username=username,
+                    pkey=paramiko.RSAKey.from_private_key_file(
+                        private_key_file, private_password
+                    ),
+                )
+            else:
+                self.trans.connect(username=username, password=password,)
+            # 将sshclient的对象的transport指定为以上的trans
+            self.ssh = paramiko.SSHClient()
+            Logger.info("SSH客户端创建成功.")
+            self.ssh._transport = self.trans
+            # 创建SFTP客户端
+            self.ftp_client = paramiko.SFTPClient.from_transport(self.trans)
+            Logger.info("SFTP客户端创建成功.")
+        except Exception as e:
+            Logger.error('SSH远程服务链接失败！！（%s）'%e)
+            raise
 
     def execute_cmd(self, cmd: str,docs):
         """
         :param cmd: 服务器下对应的命令
         """
-        Logger.info(f"{docs}-输入命令: {cmd} ")
-        stdin, stdout, stderr = self.ssh.exec_command(cmd)
-        error = stderr.read().decode()
-        Logger.info(f"{docs}-输出结果: {stdout.read().decode()}")
-        Logger.warning(f"{docs}-异常信息: {error}")
+        try:
+            Logger.info(f"{docs}-输入命令: {cmd}")
+            stdin, stdout, stderr = self.ssh.exec_command(cmd)
+            error = stderr.read().decode()
+            Logger.info(f"{docs}-输出结果: {stdout.read().decode()}")
+            Logger.warning(f"{docs}-异常信息: {error}")
+        except Exception as e:
+            error=str(e)
+            Logger.warning(f"{docs}-异常信息: {error}")
         return error
     def files_action(
         self, post: bool, local_path: str = os.getcwd(), remote_path: str = "/root",docs=''
@@ -80,10 +87,11 @@ class RemoteServe:
         :param remote_path: 服务器上的文件路径，默认在/root目录下
         """
         if post:  # 上传文件
-            self.execute_cmd("mkdir -p /mnt/backup_sql",docs='创建/mnt/backup_sql目录')
+            self.execute_cmd(f"mkdir {remote_path}",docs=f'创建{remote_path}目录') #传教要备份的保存目录
+            remotepath=os.path.join(remote_path,os.path.split(local_path)[1])
             self.ftp_client.put(
                 localpath=local_path,
-                remotepath=f"{remote_path}{os.path.split(local_path)[1]}",
+                remotepath=remotepath,
             )
             Logger.info(
                 f"{docs}-文件上传成功: {local_path} -> {self.host}:{remote_path}{os.path.split(local_path)[1]}"

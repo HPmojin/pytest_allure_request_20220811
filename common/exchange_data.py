@@ -13,16 +13,17 @@ from faker import Faker
 from string import Template
 from common.logger import Logger
 from common.hook import *     #或  from common.hook import *
-#from common.read_file import ReadFile
+from common.read_file import ReadFile
 
 #
 # fk = Faker("zh_CN") # https://blog.csdn.net/weixin_43865008/article/details/115492280
-
+extra_pool_yaml=ReadFile.get_config_dict()['extra_pool']
 class ExchangeData():
 
     # 存放提取参数的池子
-    extra_pool ={"token":''}
-    #extra_pool.update(ReadFile.read_config('$.extra_pool'))
+    extra_pool ={}
+    extra_pool.update(extra_pool_yaml)
+
 
 
     @classmethod

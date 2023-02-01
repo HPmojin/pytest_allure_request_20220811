@@ -12,7 +12,6 @@ import yaml
 
 from common.logger import Logger
 from common.operation_excle import operation_excle
-from common.exchange_data import ExchangeData
 from pathlib import Path
 
 
@@ -48,6 +47,7 @@ class ReadFile:
         :param expr: 提取表达式, 使用jsonpath语法,默认值提取整个读取的对象
         return 根据表达式返回的值
         """
+        from common.exchange_data import ExchangeData
         return ExchangeData.Extract_noe(cls.get_config_dict(), expr)
 
 

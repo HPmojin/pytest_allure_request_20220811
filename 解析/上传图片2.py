@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3.7
 # -*- coding: utf-8 -*-
 #-------------------------------------------------------------------------------
@@ -12,11 +13,11 @@ from requests import Session
 import requests
 from common.logger import Logger
 from common.exchange_data import ExchangeData
-import allure,json,re
+import allure,json
 from common.read_file import ReadFile
 from common.condition import Condition
+from requests_toolbelt import MultipartEncoder
 from common.all_path import images_Path
-
 class Api_Request():
 
 
@@ -29,8 +30,7 @@ class Api_Request():
         allure.dynamic.severity(ReadFile.read_config('$..cor_rel_case_severity')[cases[4]])
 
 
-        request_headers=str(ReadFile.read_config('$.request_headers')) #获取配置文件中的请求头
-        request_parameters=str(ReadFile.read_config('$.request_parameters')) #获取配置文件中的请求参数
+        request_headers=(ReadFile.read_config('$.request_headers')) #获取配置文件中的请求头
         #url="http://192.168.1.10:8888/api/private/v1/"
         (
             case_id,
@@ -52,19 +52,13 @@ class Api_Request():
         case_title=ExchangeData.rep_expr(case_title,return_type='srt')
         path=ExchangeData.rep_expr(path,return_type='srt')
         header_ex=ExchangeData.rep_expr(header_ex,return_type='dict')
-        request_headers=ExchangeData.rep_expr(request_headers,return_type='dict')
         data=ExchangeData.rep_expr(data,return_type='dict')
         file_obj=ExchangeData.rep_expr(file_obj,return_type='srt')
 
-        request_parameters = ExchangeData.rep_expr(request_parameters, return_type='dict')
+        request_headers.update(header_ex)#配置文件中的请求头和获取excel请求头合并
 
-        header_ex.update(request_headers) #合并配置文件中请求头
-        #request_headers.update(header_ex)#配置文件中的请求头和获取excel请求头合并
-        data.update(request_parameters) #合并配置文件中请求参数
 
-        #
         if file_obj!="":
-            #Logger.error(file_obj)
             file_name = (file_obj.split('\\')[-1])
             Suffix = file_name.split('.')[-1].lower()
             if Suffix in ['jpeg', 'jpg', 'png']:
@@ -73,15 +67,14 @@ class Api_Request():
                 file_type = "video/%s" % Suffix
             else:
                 file_type = "image/%s" % Suffix
-            from requests_toolbelt import MultipartEncoder
             data=MultipartEncoder(
                 fields={
                     "file": (file_name,
-                             open("%s/%s"%(images_Path,file_obj), 'rb'),#'./config/1.jpg'
+                             open("%s\%s"%(images_Path,file_obj), 'rb'),
                              file_type)
                 }
             )
-            header_ex["Content-Type"] = data.content_type
+            request_headers["Content-Type"] = data.content_type
 
 
         Logger.info(case_title)
@@ -90,19 +83,13 @@ class Api_Request():
         #allure.dynamic.link('%s%s'%(env_url,path), name='%s%s'%(env_url,path))  # 关联的连接
 
 
-        pattern = re.compile(r'^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+')
-        if (pattern.search(path)) == None:  # 判断读取的地址是否有前缀地址http://192.168.1.153:8562
-            urls ="%s/%s"%(env_url,path)  # 无前缀读取配置文件添加前缀
-        else:
-            urls = path  # 有前缀使用读取的完整地址
-
-        res=Api_Request().api_request(urls,method,parametric_key,header_ex,(data),file_obj)
+        res=Api_Request().api_request("%s/%s"%(env_url,path),method,parametric_key,request_headers,(data),file_obj)
 
         ExchangeData.Extract(res,extra)
-        #
-        # ExchangeData.extra_allure(extra)#显示提取参数路径
-        # Logger.info('提取参数路径：%s' % extra)
-        # Logger.info('参数池：%s' % ExchangeData.extra_pool)
+
+        ExchangeData.extra_allure(extra)#显示提取参数路径
+        Logger.info('提取参数路径：%s' % extra)
+        Logger.info('参数池：%s' % ExchangeData.extra_pool)
 
 
         return res
@@ -150,7 +137,6 @@ class Api_Request():
         Logger.info('上传文件：%s' % file)
         try:
 
-            #res = requests.request(method=method, url=url,  headers=header,files=file, **parametric)#files=file,
             res = requests.request(method=method, url=url,  headers=header, **parametric)#files=file,
             # res = self.request(method=method, url=url, files=file, headers=header, data=data)
             response = res.json()
