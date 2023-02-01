@@ -49,16 +49,9 @@ def env_url(Acmdopt):#读取数据源文件
 @pytest.fixture(scope='session')  #读取数据库查询断言
 def get_db(Acmdopt):
     assert_db = ReadFile.read_config('$.Operations_db.assert_db')
-    mysql = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
+    db_info = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
     if assert_db:#判断是否查询数据库断言
-        db=DB(
-        host=str(mysql['host']),
-        port=int(mysql['port']),
-        user=str(mysql['user']),
-        password=str(mysql['password']),
-        db=mysql['db_name'],
-        charset=mysql.get('charset', 'utf8mb4'),
-    )
+        db=DB(db_info)
     else:
         db=None
 
@@ -75,18 +68,12 @@ def get_db(Acmdopt):
 def ConnectingRemoteServices(Acmdopt):
     #获取配置文件中的远程服务器和数据库参数
     ssh_server = dict(ReadFile.read_config('$.ssh_server.%s'%Acmdopt))
-    mysql_info = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
-    ssh_host = ssh_server['host']
-    ssh_port = ssh_server['port']
-    ssh_user = ssh_server['username']
-    ssh_pwd = ssh_server['password']
-    sql_data_file = ssh_server['sql_data_file']
-    sql_upload_file=ssh_server['sql_upload_file']
+    db_info = dict(ReadFile.read_config('$.database.%s'%Acmdopt))
 
     backup_db = ReadFile.read_config('$.Operations_db.backup')
 
     if backup_db:
-        BR = BakRecDB(host=ssh_host, port=ssh_port, username=ssh_user, password=ssh_pwd,mysql_info=mysql_info,sql_data_file=sql_data_file,sql_upload_file=sql_upload_file)  # 初始化链接服务器
+        BR = BakRecDB(ssh_server,db_info)  # 初始化链接服务器
         BR.backups_sql()  # 链接ssh远程访问，上传测试sql数据，备份当前数据库，导入测试sql库，
         BR.ssh_close()
 
@@ -94,7 +81,7 @@ def ConnectingRemoteServices(Acmdopt):
 
     recovery_db = ReadFile.read_config('$.Operations_db.recovery')
     if recovery_db:
-        BR = BakRecDB(host=ssh_host, port=ssh_port, username=ssh_user, password=ssh_pwd,mysql_info=mysql_info,sql_data_file=sql_data_file,sql_upload_file=sql_upload_file)  # 初始化链接服务器
+        BR = BakRecDB(ssh_server,db_info)  # 初始化链接服务器
         BR.recovery_sql()  # 恢复测试前sql数据，关闭ssh链接
         BR.ssh_close()
 
