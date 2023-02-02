@@ -17,42 +17,41 @@ from common.RemoteServe import RemoteServe
 
 class BakRecDB(RemoteServe):
 
-    def __init__(self,
-        host,
-        port,
-        username,
-        password,
-        mysql_info,
-        sql_data_file,
-        sql_upload_file,
-        private_key_file = None,
-        private_password = None):
-
-        super().__init__(
-                        host,
-                        port,
-                        username,
-                        password,
-                        private_key_file = private_key_file,
-                        private_password = private_password)  # 需要调用父类中的init函数
-        self.ssh_host=host
-        self.ssh_port=port
-        self.ssh_username=username
-        self.ssh_password=password
-
-        self.sql_data_file=sql_data_file #sql文件备份的文件夹
-        self.sql_upload_file=sql_upload_file #本地初始化测试前要恢复测试数据库的sql文件
-        self.private_key_file =private_key_file
-        self.private_password =private_password
+    def __init__(self,ssh_server, db_info):
 
 
 
-        self.msqyl_host=mysql_info['host']
-        self.msqyl_port=mysql_info['port']
-        self.msqyl_username=mysql_info['user']
-        self.msqyl_password=mysql_info['password']
-        self.msqyl_db_name=mysql_info['db_name']
-        self.msqyl_charset=mysql_info.get('charset', 'utf8mb4')
+        super().__init__( ssh_server,db_info)  # 需要调用父类中的init函数
+        self.ssh_host = ssh_server['host']
+        self.ssh_port = ssh_server['port']
+        self.ssh_user = ssh_server['username']
+        self.ssh_pwd = ssh_server['password']
+        self.private_key_file= ssh_server['private_key_file']
+        self.private_password= ssh_server['private_passowrd']
+        self.mysql_container=ssh_server['mysql_container']
+        self.sql_data_file = ssh_server['sql_data_file']
+        self.sql_upload_file = ssh_server['sql_upload_file']
+
+        '''
+            # 私有密钥文件路径
+            private_key_file: ''
+            # 私钥密码
+            privat_passowrd: ''
+            # 如果使用的docker容器部署mysql服务，需要传入mysql的容器id/name
+            mysql_container:
+            # 数据库备份文件导出的本地路径, 需要保证存在该文件夹下   ./backup_sqls/
+            sql_data_file: /mnt/backup_sql/  #  /mnt/backup_sql/
+            #上传本地已初始化好的数据库sql文件，恢复到测试数据库进行测试
+            sql_upload_file: ./config/mydb.sql
+        '''
+
+
+        self.msqyl_host=db_info['host']
+        self.msqyl_port=db_info['port']
+        self.msqyl_username=db_info['user']
+        self.msqyl_password=db_info['password']
+        self.msqyl_db_name=db_info['db_name']
+        self.msqyl_charset=db_info.get('charset', 'utf8mb4')
 
         #链接数据库拼接
         self.Link_db=f'-h{self.msqyl_host} -u{self.msqyl_username} -p{self.msqyl_password} -P{self.msqyl_port} {self.msqyl_db_name}'

@@ -22,22 +22,18 @@ class DB:
 
 
 
-    def __init__(self ,host,
-            port,
-            user,
-            password,
-            db,
-            charset='utf8mb4',
-            ):
+    def __init__(self ,db_info):
+
         """
         初始化数据库连接，并指定查询的结果集以字典形式返回
         """
-        self.host=host
-        self.port=port
-        self.user=user
-        self.password=password
-        self.db=db
-        self.charset=charset
+        self.host=str(db_info['host'])
+        self.port=int(db_info['port'])
+        self.user=str(db_info['user'])
+        self.password=str(db_info['password'])
+        self.db=db_info['db_name']
+        self.charset=db_info.get('charset', 'utf8mb4')
+
         try:
             self.connection = pymysql.connect(
                 host=self.host,
