@@ -8,16 +8,14 @@
 # @Software: PyCharm
 #-------------------------------------------------------------------------------
 import pytest,allure
-
 from common.assert_api import AssertApi
 from common.api_request import Api_Request
 from common.read_exce_yaml_caes import get_yaml_excle_caes
 
-
 #@allure.epic(ReadFile.read_config("$.project_name"))  # 项目名称
 class Test():
 
-    @pytest.mark.parametrize("case",get_yaml_excle_caes())
+    @pytest.mark.parametrize("case",get_yaml_excle_caes('test'))
     @allure.step
     def test_001(self,case,get_db,env_url):
 

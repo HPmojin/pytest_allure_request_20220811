@@ -16,6 +16,7 @@ from common.operation_excle import operation_excle
 from common.logger import Logger
 def get_yaml_all_caes(yaml_file):#获取yaml文件中的所有用例
     get_all_yaml = ReadFile.read_config(yaml_file)  # 获取存放yaml文件目录路径
+    case_severity_list = ReadFile.read_config('$..case_severity')
     yaml_path_all = []  # 收集所有的yaml文件路径
 
     for i in os.listdir(get_all_yaml):
@@ -27,7 +28,8 @@ def get_yaml_all_caes(yaml_file):#获取yaml文件中的所有用例
         title = one_caselist_path.split('/')[-1].split('.')[0]
         for one_case in ReadFile.get_case_data_yaml(one_caselist_path):
             (one_case.insert(0, title))  # .insert(0,title)
-            all_yaml_case.append(one_case)
+            if one_case[5] in case_severity_list:  # 筛选匹配的用例等级进行测试
+                all_yaml_case.append(one_case)
 
     return all_yaml_case
 
@@ -54,8 +56,9 @@ def get_excle_all_caes(excle_file):#获取excle文件中的所有用例
 
     return all_excle_case
 
-def get_yaml_excle_caes():# get_all_yaml_excle_caes  #获取yaml和excle用例，用例；yaml和excle累计所有
-    cmdopt_env='test'
+def get_yaml_excle_caes(cmdopt_env):# get_all_yaml_excle_caes  #获取yaml和excle用例，用例；yaml和excle累计所有
+    #cmdopt_env='test'
+    #Logger.error(cmdopt_env)
     test_case_type = (ReadFile.read_config('$.test_case_type.%s'%cmdopt_env))
     #test_case_type = (ReadFile.read_config('$.test_case_type' ))
 
