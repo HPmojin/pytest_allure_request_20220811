@@ -42,7 +42,7 @@ def env_url(Acmdopt):#读取数据源文件
     url = ReadFile.read_config('$.server.%s'%Acmdopt)#  $..test
     Logger.warning('执行环境为：【%s】 %s' %(Acmdopt_env,url))
 
-    return url
+    return [url,Acmdopt]
 
 
 

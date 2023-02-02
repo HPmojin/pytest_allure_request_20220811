@@ -1,0 +1,15 @@
+
+- - "c1" #序列
+  - "post请求实现登录"  #用例名称
+  - '{"Authorization": "${token}"}'  #请求头
+  - "login"  #请求地址
+  - "P1"   #用例等级
+  - '${token}!=None'     #跳过条件
+  - "post"  #请求方法
+  - "json"  #参数类型
+  - ''   #上传文件
+  - '{"username":"admin","password":"123456"}'  #请求参数
+  - '{"token": "$...token","userId": "$...id"}'  #后置提交参数
+  - "select * from sp_manager where mg_id=${userId}"  #后置执行slq语句
+  #- '{"$..msg":"登录成功", "$..status":200}'  #期望结果  #,"$...username":"$..sql_0_data.mg_name",
+  - '[["登录成功","==","$..msg","str"],[200,"==","$..status","int"]]' #断言  [期望，断言类型，实际，数据类型 str,int]

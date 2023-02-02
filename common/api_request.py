@@ -22,6 +22,9 @@ class Api_Request():
 
     @classmethod
     def api_data(cls,cases,env_url):
+
+        url,env=env_url #环境，url
+
         allure.dynamic.story(cases[0])
         del cases[0]
 
@@ -86,13 +89,13 @@ class Api_Request():
 
         Logger.info(case_title)
         allure.dynamic.title(case_title)
-        allure.dynamic.description("【用例名称】：%s\n\n【请求地址】：%s%s\n\n【请求参数】：%s"%(case_title,env_url,path,data))
-        #allure.dynamic.link('%s%s'%(env_url,path), name='%s%s'%(env_url,path))  # 关联的连接
+        allure.dynamic.description("【用例名称】：%s\n\n【请求地址】：%s%s\n\n【请求参数】：%s"%(case_title,url,path,data))
+        #allure.dynamic.link('%s%s'%(url,path), name='%s%s'%(url,path))  # 关联的连接
 
 
         pattern = re.compile(r'^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+')
         if (pattern.search(path)) == None:  # 判断读取的地址是否有前缀地址http://192.168.1.153:8562
-            urls ="%s/%s"%(env_url,path)  # 无前缀读取配置文件添加前缀
+            urls ="%s/%s"%(url,path)  # 无前缀读取配置文件添加前缀
         else:
             urls = path  # 有前缀使用读取的完整地址
 

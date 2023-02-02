@@ -10,9 +10,9 @@ server:
 
 
 Operations_db: # 操作数据库
-  assert_db: True  #  True  启用数据库查询断言   False  不启用
-  backup: True   #启动测试前启动备份数据库  数据库服务器 linux适用，windows不适用
-  recovery: True  #测试完成后恢复备份数据库  数据库服务器 linux适用，windows不适用
+  assert_db: False  #  True  启用数据库查询断言   False  不启用
+  backup: False   #启动测试前启动备份数据库  数据库服务器 linux，windows都适用
+  recovery: False  #测试完成后恢复备份数据库  数据库服务器 linux，windows都适用
 
 
 severity:
@@ -31,17 +31,17 @@ request_headers: {"peachauthversioncode": "${versioncode}","appversioncode": "${
 extra_pool: {"userAccount": "ceshi6","password": "Hj123456","org_id": 176,"tenant_id": 1,"token":'',"versioncode": "9","singleBatch": False}
 
 # 基准的请求参数
-request_parameters: {"Au": "Au"}
+request_parameters: {}
 
 test_case_type:  # 用例读取的来源  为True读取文件类型，为False不读取,如excel 和yaml都为True时 读取累加
   dev:
     - read: True  #  True  读取excle文件中的用例   False  不读取
-      test_case: ./data/case_excle/
+      test_case: ./data/env_dev/case_excle/
       file: xlsx
       order: 1   #顺序
 
     - read: True  #  True  False  读取yaml文件中的用例
-      test_case: ./data/case_yaml/
+      test_case: ./data/env_dev/case_yaml/
       file: yaml
       order: 0  #顺序
 
@@ -49,23 +49,23 @@ test_case_type:  # 用例读取的来源  为True读取文件类型，为False�
 
   test:
     - read: True  #  True  读取excle文件中的用例   False  不读取
-      test_case: ./data/case_excle/
+      test_case: ./data/env_test/case_excle/
       file: xlsx
       order: 1   #数字排序顺序
 
     - read: True  #  True  False  读取yaml文件中的用例
-      test_case: ./data/case_yaml/
+      test_case: ./data/env_test/case_yaml/
       file: yaml
       order: 0  #数字排序顺序
 
   prod:
     - read: False  #  True  读取excle文件中的用例   False  不读取
-      test_case: ./data/case_excle/
+      test_case: ./data/env_prod/case_excle/
       file: xlsx
       order: 1   #顺序
 
     - read: True  #  True  False  读取yaml文件中的用例
-      test_case: ./data/case_yaml/
+      test_case: ./data/env_prod/case_yaml/
       file: yaml
       order: 0  #顺序
 
