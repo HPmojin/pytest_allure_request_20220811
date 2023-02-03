@@ -8,7 +8,7 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle/yaml，一�
 4.数据库查询断言 ，数据库提取参数  
 5.数据库初始化备份恢复  
 6.使用pytest+allure框架   
-7.测试完成后打包allure报告为zip包通过邮件发送
+7.测试完成后打包allure报告为zip包通过邮件发送   
 8.切换运行环境，dev/test/prod
 
 ![img.png](config/png/img.png)
