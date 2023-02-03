@@ -57,7 +57,7 @@ class DB:
                 Logger.info(sql)
                 cursor.execute(sql)
                 #print(cursor.fetchall()) #fetchone
-                result = cursor.fetchall()
+                result = cursor.fetchone()
                 Logger.info(result)
 
             except Exception as e:

@@ -46,12 +46,12 @@ class BakRecDB(RemoteServe):
         '''
 
 
-        self.msqyl_host=db_info['host']
-        self.msqyl_port=db_info['port']
-        self.msqyl_username=db_info['user']
-        self.msqyl_password=db_info['password']
-        self.msqyl_db_name=db_info['db_name']
-        self.msqyl_charset=db_info.get('charset', 'utf8mb4')
+        self.msqyl_host=db_info['data']['host']
+        self.msqyl_port=db_info['data']['port']
+        self.msqyl_username=db_info['data']['user']
+        self.msqyl_password=db_info['data']['password']
+        self.msqyl_db_name=db_info['data']['database']
+
 
         #链接数据库拼接
         self.Link_db=f'-h{self.msqyl_host} -u{self.msqyl_username} -p{self.msqyl_password} -P{self.msqyl_port} {self.msqyl_db_name}'

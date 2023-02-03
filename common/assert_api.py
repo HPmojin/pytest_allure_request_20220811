@@ -123,11 +123,18 @@ class AssertApi():
                         #ExchangeData.extra_pool.update({"sql_%s_data"%n:data_sql_dic})
                         self.re_sql_data.update({"sql_%s_data"%n:data_sql_dic})
                         #Logger.info(ExchangeData.extra_pool)
-                        allure.attach(
-                            json.dumps({"sql_%s_data"%n:data_sql_dic}, ensure_ascii=False, indent=4),
-                            sql,
-                            allure.attachment_type.JSON,
-                        )
+
+                        try:
+                            allure_data=json.dumps({"sql_%s_data"%n:data_sql_dic}, ensure_ascii=False, indent=4)
+                        except Exception as e:
+                            allure_data = json.dumps("sql_%s_data:'%s'"%(n,data_sql_dic), ensure_ascii=False, indent=4)
+                            Logger.warning('sql查询数据转换插入allure报告数据，出现异常！！（%s）'%e)
+
+                        allure.attach( allure_data,sql, allure.attachment_type.JSON,)
+
+
+
+
 
 
 
