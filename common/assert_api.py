@@ -21,7 +21,7 @@ class AssertApi():
         result_dic_list=[]
         if type(response) !=dict:
             response={"response":response}
-        Logger.info(response)
+
         self.re_sql_data.update(response)
         Logger.info(self.re_sql_data)
 

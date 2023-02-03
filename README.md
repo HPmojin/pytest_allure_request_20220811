@@ -1,14 +1,15 @@
-# Aip接口自动化测试pytest+allure+request+jsonpath+excle
+# Aip接口自动化测试pytest+allure+request+jsonpath+excle/yaml
 
 #### 介绍
-Aip接口自动化测试python+pytest+allure+request+jsonpath+excle，一个支持仅编辑Excle就可实现的接口自动化测试框架。   
-1.编辑Excle做接口数据驱动的数据源    
+Aip接口自动化测试python+pytest+allure+request+jsonpath+excle/yaml，一个支持仅编辑Excle/yaml就可实现的接口自动化测试框架。   
+1.编辑Excle做接口数据驱动的数据源，新增yaml添加用例，yaml,excle混和都支持   
 2.接口上下游数据依赖处理   
-3.Excel执行函数获取随机值做新增接口数据   
-4.数据库查询断言   
+3.用例中字符串中写入函数名，获取随机值做新增接口数据   
+4.数据库查询断言 ，数据库提取参数  
 5.数据库初始化备份恢复  
 6.使用pytest+allure框架   
 7.测试完成后打包allure报告为zip包通过邮件发送
+8.切换运行环境，dev/test/prod
 
 ![img.png](config/png/img.png)
 
@@ -91,7 +92,7 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle，一个支�
 ![img__1.png](config/png/img__1.png)
 #### 安装教程
 
-1.  python10 需要安装pytest==7.1.3
+1.  python3.10.7 需要安装pytest==7.1.3
 2.  安装依赖环境 pip install -r requirements.txt -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com
 3.  安装allrue报告allure-2.18.1.zip
 4.  安装java环境，allure需要java环境

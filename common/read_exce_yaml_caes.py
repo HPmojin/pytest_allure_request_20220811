@@ -56,7 +56,7 @@ def get_excle_all_caes(excle_file):#获取excle文件中的所有用例
 
     return all_excle_case
 
-def get_yaml_excle_caes(cmdopt_env):# get_all_yaml_excle_caes  #获取yaml和excle用例，用例；yaml和excle累计所有
+def get_yaml_excle_caes(cmdopt_env='test'):# get_all_yaml_excle_caes  #获取yaml和excle用例，用例；yaml和excle累计所有
     #cmdopt_env='test'
     #Logger.error(cmdopt_env)
     test_case_type = (ReadFile.read_config('$.test_case_type.%s'%cmdopt_env))
