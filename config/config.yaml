@@ -94,29 +94,37 @@ email:
 database:
   #host: "192.168.1.183" #localhost  127.0.0.1
   dev: #开发环境数据库
-    host: "192.168.1.183" #localhost  127.0.0.1
-    port: 3306
-    user: root
-    # 不用''会被解析成int类型数据
-    password: root
-    db_name:  mydb
-    charset:  utf8mb4
-  test: #开发环境数据库
-    host: "192.168.1.234" #localhost  127.0.0.1
-    port: 3306
-    user: root
-    # 不用''会被解析成int类型数据
-    password: '123456'
-    db_name: mydb
-    charset: utf8mb4
-  prod: #开发环境数据库
-    host: "127.0.0.1" #localhost  127.0.0.1
-    port: 3306
-    user: root
-    # 不用''会被解析成int类型数据
-    password: root
-    db_name: mydb
-    charset: utf8mb4
+    db_type: postgresql   #mysql,postgresql 数据库类型
+    data:
+      host: "192.168.1.183" #localhost  127.0.0.1
+      port: 3306
+      user: root
+      # 不用''会被解析成int类型数据
+      password: root
+      database: mydb
+
+
+  test: #测试环境数据库
+    db_type: mysql   #mysql,postgresql 数据库类型
+    data:
+      host: "192.168.1.234" #localhost  127.0.0.1
+      port: 3306
+      user: root
+      # 不用''会被解析成int类型数据
+      password: '123456'
+      database: mydb
+
+
+  prod: #测试环境数据库
+    db_type: postgresql   #mysql,postgresql 数据库类型
+    data:
+      host: "192.168.1.234" #localhost  127.0.0.1
+      port: 5432
+      user: postgres
+      # 不用''会被解析成int类型数据
+      password: root
+      database: test
+
 
 # 数据库所在的服务器配置
 ssh_server:

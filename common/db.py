@@ -8,7 +8,7 @@
 # @Software : PyCharm
 #-------------------------------------------------------------------------------
 
-
+import psycopg2
 import json,decimal
 from datetime import datetime
 from typing import Union
@@ -22,28 +22,23 @@ class DB:
 
 
 
-    def __init__(self ,db_info):
+    def __init__(self ,db_info,):
 
         """
         初始化数据库连接，并指定查询的结果集以字典形式返回
         """
-        self.host=str(db_info['host'])
-        self.port=int(db_info['port'])
-        self.user=str(db_info['user'])
-        self.password=str(db_info['password'])
-        self.db=db_info['db_name']
-        self.charset=db_info.get('charset', 'utf8mb4')
+        self.charset='utf8mb4'
+        self.db_type=db_info.get('db_type', 'mysql')
 
         try:
-            self.connection = pymysql.connect(
-                host=self.host,
-                port=self.port,
-                user=self.user,
-                password=self.password,
-                db=self.db,
-                charset=self.charset,
-                cursorclass=pymysql.cursors.DictCursor
-            )
+            if self.db_type=='mysql':
+                self.connection = pymysql.connect(
+                    **db_info['data'],
+                    charset=self.charset,
+                    cursorclass=pymysql.cursors.DictCursor
+                )
+            elif self.db_type=='postgresql':
+                self.connection = psycopg2.connect( **db_info['data'],)
         except Exception as e:
             Logger.error("数据库链接失败！！（%s）"%e)
             raise
@@ -61,7 +56,9 @@ class DB:
             try:
                 Logger.info(sql)
                 cursor.execute(sql)
-                result = cursor.fetchone()
+                #print(cursor.fetchall()) #fetchone
+                result = cursor.fetchall()
+                Logger.info(result)
 
             except Exception as e:
                 Logger.error('数据库查询数据出错！！（%s）'%str(e))
