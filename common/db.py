@@ -15,6 +15,7 @@ from typing import Union
 
 import pymysql
 from common.logger import Logger
+from psycopg2 import extras  # 不能少
 from common.read_file import ReadFile
 
 
@@ -52,25 +53,43 @@ class DB:
         :param sql: sql语句
         :return: select 语句 如果有结果则会返回 对应结果字典，delete，insert，update 将返回None
         """
-        with self.connection.cursor() as cursor:
-            try:
-                Logger.info(sql)
-                cursor.execute(sql)
-                #print(cursor.fetchall()) #fetchone
-                result = cursor.fetchone()
-                if result==None:
-                    result={}
-                Logger.info(result)
+        if self.db_type=='mysql':
+            with self.connection.cursor() as cursor:
+                try:
+                    Logger.info(sql)
+                    cursor.execute(sql)
+                    #print(cursor.fetchall()) #fetchone
+                    result = cursor.fetchone()
+                    Logger.info(result)
+                except Exception as e:
+                    Logger.error('数据库查询数据出错！！（%s）'%str(e))
+                    #result={'error':str(e)}
+                    result = {}
+                cursor.close()
 
-            except Exception as e:
-                Logger.error('数据库查询数据出错！！（%s）'%str(e))
-                #result={'error':str(e)}
-                result = {}
+        elif self.db_type == 'postgresql':
+                with self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+                    try:
+                        Logger.info(sql)
+                        cursor.execute(sql)
+                        # print(cursor.fetchall()) #fetchone
+                        result = cursor.fetchall()
+                        if result==[]:
+                            result={}
+                        else:
+                            result=dict(result[0])
+                        Logger.info(result)
+                    except Exception as e:
+                        Logger.error('数据库查询数据出错！！（%s）' % str(e))
+                        # result={'error':str(e)}
+                        result = {}
 
+                    cursor.close()
 
-            # 使用commit解决查询数据出现概率查错问题
-            self.connection.commit()
-            return self.verify(result)
+        # 使用commit解决查询数据出现概率查错问题
+
+        self.connection.commit()
+        return self.verify(result)
 
 
 
