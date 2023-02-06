@@ -128,6 +128,7 @@ database:
 
 # 数据库所在的服务器配置
 ssh_server:
+  #备份 /恢复 需要将将数据库服务器的D:\Program Files\PostgreSQL\14\bin或D:\Program Files\mysql-8.0.30-winx64\bin 配置到环境变量中
   dev: #开发环境数据库所在的服务器
     host: "192.168.1.183" #localhost  127.0.0.1
     port: 22
