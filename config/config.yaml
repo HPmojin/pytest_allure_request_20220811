@@ -123,7 +123,7 @@ database:
       user: postgres
       # 不用''会被解析成int类型数据
       password: root
-      database: postgres
+      database: mydb
 
 
 # 数据库所在的服务器配置
@@ -175,4 +175,4 @@ ssh_server:
     # 数据库备份文件导出的本地路径, 需要保证存在该文件夹   ./backup_sqls/
     sql_data_file: D:\Users #  Linux路径： /mnt/backup_sql/   windows路径: D:\Users
     #上传本地已初始化好的数据库sql文件，恢复到测试数据库进行测试
-    sql_upload_file: ./config/postgres.sql  #ar_myb.sql    ./config/mydb.sql
+    sql_upload_file: ./config/mydb_psy.sql  #ar_myb.sql    ./config/mydb.sql
