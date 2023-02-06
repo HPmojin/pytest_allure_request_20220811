@@ -58,6 +58,8 @@ class DB:
                 cursor.execute(sql)
                 #print(cursor.fetchall()) #fetchone
                 result = cursor.fetchone()
+                if result==None:
+                    result={}
                 Logger.info(result)
 
             except Exception as e:

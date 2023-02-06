@@ -10,7 +10,7 @@ server:
 
 
 Operations_db: # 操作数据库
-  assert_db: False  #  True  启用数据库查询断言   False  不启用
+  assert_db: True  #  True  启用数据库查询断言   False  不启用
   backup: False   #启动测试前启动备份数据库  数据库服务器 linux，windows都适用
   recovery: False  #测试完成后恢复备份数据库  数据库服务器 linux，windows都适用
 
@@ -123,7 +123,7 @@ database:
       user: postgres
       # 不用''会被解析成int类型数据
       password: root
-      database: test
+      database: postgres
 
 
 # 数据库所在的服务器配置
@@ -156,15 +156,15 @@ ssh_server:
     # 如果使用的docker容器部署mysql服务，需要传入mysql的容器id/name
     mysql_container:
     # 数据库备份文件导出的本地路径, 需要保证存在该文件夹   ./backup_sqls/
-    sql_data_file: D:\Users #  Linux路径： /mnt/backup_sql/   windows路径: D:\Users
+    sql_data_file: D:\Users\ #  Linux路径： /mnt/backup_sql/   windows路径: D:\Users
     #上传本地已初始化好的数据库sql文件，恢复到测试数据库进行测试
     sql_upload_file: ./config/mydb.sql  #ar_myb.sql    ./config/mydb.sql
 
   prod: #开发环境数据库所在的服务器
-    host: "127.0.0.1" #localhost  127.0.0.1
+    host: "192.168.1.234" #localhost  127.0.0.1
     port: 22
-    username: root
-    password: root
+    username: NING MEI
+    password: '123456'
     # 私有密钥文件路径
     private_key_file: ''
     # 私钥密码
@@ -172,7 +172,6 @@ ssh_server:
     # 如果使用的docker容器部署mysql服务，需要传入mysql的容器id/name
     mysql_container:
     # 数据库备份文件导出的本地路径, 需要保证存在该文件夹   ./backup_sqls/
-    sql_data_file: /mnt/backup_sql/  #  /mnt/backup_sql/
+    sql_data_file: D:\Users #  Linux路径： /mnt/backup_sql/   windows路径: D:\Users
     #上传本地已初始化好的数据库sql文件，恢复到测试数据库进行测试
-    sql_upload_file: ./config/mydb.sql
-
+    sql_upload_file: ./config/postgres.sql  #ar_myb.sql    ./config/mydb.sql

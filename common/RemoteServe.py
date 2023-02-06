@@ -30,7 +30,7 @@ from common.logger import Logger
 class RemoteServe:
     """远程服务器"""
 
-    def __init__(self,ssh_server, db_info):
+    def __init__(self,ssh_server, db_info=''):
 
         self.ssh_host = ssh_server['host']
         self.ssh_port = ssh_server['port']
@@ -85,12 +85,20 @@ class RemoteServe:
         try:
             Logger.info(f"{docs}-输入命令: {cmd}")
             stdin, stdout, stderr = self.ssh.exec_command(cmd)
-            error = stderr.read().decode()
-            Logger.info(f"{docs}-输出结果: {stdout.read().decode()}")
-            Logger.warning(f"{docs}-异常信息: {error}")
+            try:
+                error = stderr.read().decode('gbk')
+            except:
+                error = stderr.read().decode('utf-8')
+            try:
+                stdout_srt = stdout.read().decode()
+            except:
+                stdout_srt = stdout.read().decode()
+
+            Logger.info(f"{docs}-输出结果: {stdout_srt}")
+            Logger.warning(f"{docs}-警告信息: {error}")
         except Exception as e:
             error=str(e)
-            Logger.warning(f"{docs}-异常信息: {error}")
+            Logger.error(f"{docs}-异常信息: {error}")
         return error
     def files_action(
         self, post: bool, local_path: str = os.getcwd(), remote_path: str = "/root",docs=''
@@ -108,7 +116,7 @@ class RemoteServe:
                 remotepath=remotepath,
             )
             Logger.info(
-                f"{docs}-文件上传成功: {local_path} -> {self.ssh_host}:{remote_path}{os.path.split(local_path)[1]}"
+                f"{docs}-文件上传成功: {local_path} -> {self.ssh_host}:{remotepath}"
             )
         else:  # 下载文件
             if not os.path.exists(local_path):

@@ -45,16 +45,33 @@ class BakRecDB(RemoteServe):
             sql_upload_file: ./config/mydb.sql
         '''
 
+        self.db_type=db_info['db_type']
+        self.db_host=db_info['data']['host']
+        self.db_port=db_info['data']['port']
+        self.db_username=db_info['data']['user']
+        self.db_password=db_info['data']['password']
+        self.db_name=db_info['data']['database']
+        self.upload_sql_path = os.path.join(self.sql_data_file, os.path.split(self.sql_upload_file)[1])
 
-        self.msqyl_host=db_info['data']['host']
-        self.msqyl_port=db_info['data']['port']
-        self.msqyl_username=db_info['data']['user']
-        self.msqyl_password=db_info['data']['password']
-        self.msqyl_db_name=db_info['data']['database']
+        if self.db_type=="mysql":
+            #链接数据库拼接
+            self.Link_db=f'-h{self.db_host} -u{self.db_username} -p{self.db_password} -P{self.db_port} {self.db_name}'
+            # 备份当前数据库
+            self.bak_cmd=f'mysqldump {self.Link_db} > {self.sql_data_file}/{self.db_name}_bak.sql'
+            # 恢复上传的数据库数据
+            self.recovery_cmd_upload=f'mysql {self.Link_db} < {self.sql_data_file}/{self.db_name}_bak.sql'
+            # 测试完成恢复备份的数据库
+            self.recovery_cmd_bak = f'mysql {self.Link_db} < {self.upload_sql_path}'
 
 
-        #链接数据库拼接
-        self.Link_db=f'-h{self.msqyl_host} -u{self.msqyl_username} -p{self.msqyl_password} -P{self.msqyl_port} {self.msqyl_db_name}'
+        elif self.db_type=="postgresql":
+            #备份当前数据库
+            self.bak_cmd=f'pg_dump  -h {self.db_host}  -p  {self.db_port}  -U  {self.db_username} -c  -C -f  {self.sql_data_file}/{self.db_name}_bak.sql  {self.db_name}'
+            #恢复上传的数据库数据
+            self.recovery_cmd_upload=f'psql -h {self.db_host} -p {self.db_port} -U {self.db_username} -f {self.sql_data_file}/{self.db_name}_bak.sql'
+            # 测试完成恢复备份的数据库
+            self.recovery_cmd_bak = f'psql -h {self.db_host} -p {self.db_port} -U {self.db_username} -f {self.upload_sql_path}'
+
 
     def backups_sql(self):# 链接ssh远程访问，上传测试sql数据，备份当前数据库，导入测试sql库，
         # self.files_action(post=True, local_path='./config/mydb.sql',
@@ -63,8 +80,7 @@ class BakRecDB(RemoteServe):
                         remote_path=self.sql_data_file, docs='本地sql')  # 上传本地sql文件到数据库服务器
 
         #Logger.info(f'备份当前数据库：mysqldump {self.Link_db} > {self.sql_data_file}/{self.msqyl_db_name}_bak.sql')
-        (self.execute_cmd(
-            f'mysqldump {self.Link_db} > {self.sql_data_file}/{self.msqyl_db_name}_bak.sql', docs='备份当前数据库'))  # 备份当前数据库数据
+        (self.execute_cmd(self.bak_cmd, docs='备份当前数据库'))  # 备份当前数据库数据
         # mysqldump -h127.0.0.1 -uroot -proot -P3306 mydb>mydb_bak.sql
         #mysql -h127.0.0.1 -uroot -proot -P3306 mydb <mydb_bak.sql
 
@@ -72,14 +88,13 @@ class BakRecDB(RemoteServe):
         #mysql -h127.0.0.1 -uroot -p123456 -P3306 ar_metro <ar_myb.sql
         #Logger.info(f'恢复上传sql库数据：mysql {self.Link_db} < {self.sql_data_file}{os.path.split(self.sql_upload_file)[1]}')
 
-        upload_sql_path = os.path.join(self.sql_data_file, os.path.split(self.sql_upload_file)[1])
-        (self.execute_cmd(f'mysql {self.Link_db} < {upload_sql_path}', docs='恢复上传sql库数据'))  # 恢复上传数据库数据
+
+        (self.execute_cmd(self.recovery_cmd_upload, docs='恢复上传sql库数据'))  # 恢复上传数据库数据
         #self.ssh_close()
 
     def recovery_sql(self):##恢复测试前sql数据，关闭ssh链接
         #Logger.info(f'测试完成恢复备份sql数据：mysql {self.Link_db} < {self.sql_data_file}/{self.msqyl_db_name}_bak.sql')
 
-        (self.execute_cmd(
-            f'mysql {self.Link_db} < {self.sql_data_file}/{self.msqyl_db_name}_bak.sql', docs='测试完成恢复备份sql数据'))  # 恢复备份数据
+        (self.execute_cmd(self.recovery_cmd_bak, docs='测试完成恢复备份sql数据'))  # 恢复备份数据
         #self.ssh_close()
 
