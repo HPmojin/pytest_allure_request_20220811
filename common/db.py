@@ -60,6 +60,8 @@ class DB:
                     cursor.execute(sql)
                     #print(cursor.fetchall()) #fetchone
                     result = cursor.fetchone()
+                    if result==None:
+                        result={}
                     Logger.info(result)
                 except Exception as e:
                     Logger.error('数据库查询数据出错！！（%s）'%str(e))
