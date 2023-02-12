@@ -24,6 +24,10 @@ class Api_Request():
     def api_data(cls,cases,env_url):
 
         url,env=env_url #环境，url
+        ExchangeData.extra_pool.update({
+            "url":url,
+            "env": env,
+        })
 
         allure.dynamic.story(cases[0])
         del cases[0]
@@ -154,7 +158,7 @@ class Api_Request():
         try:
 
             #res = requests.request(method=method, url=url,  headers=header,files=file, **parametric)#files=file,
-            res = requests.request(method=method, url=url,  headers=header, **parametric)#files=file,
+            res = requests.request(method=method, url=url,  headers=header,timeout=30, **parametric)#files=file,
             # res = self.request(method=method, url=url, files=file, headers=header, data=data)
             response = res.json()
 
