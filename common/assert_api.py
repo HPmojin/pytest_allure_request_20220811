@@ -27,7 +27,7 @@ class AssertApi():
 
         #后置提取参数
         extra = case[-3]  # 后置提取参数到参数池中
-        ExchangeData.extra_allure(extra)#显示提取参数路径
+        ExchangeData.allure_step_text('提取参数路径：',extra)#显示提取参数路径
         ExchangeData.Extract(self.re_sql_data,extra)
         ExchangeData.extra_pool_allure()  # 显示参数池数
         Logger.info('提取参数路径：%s' % extra)
@@ -37,9 +37,13 @@ class AssertApi():
 
             n = 1
 
-            expectlist = ExchangeData.rep_expr(expectlist, return_type='dict')
-            Logger.info('变量引用后的断言内容：%s' % expectlist)
-            for expect_jsonpath in (expectlist):
+            expectlist_change = ExchangeData.rep_expr(expectlist, return_type='dict')
+            try:
+                expectlist=eval(expectlist)
+            except:
+                expectlist=expectlist.split("],[")
+            Logger.info('变量引用后的断言内容：%s' % expectlist_change)
+            for expect_jsonpath,expect_jsonpath_str in zip(expectlist_change,expectlist):
                 # Logger.info((jsonpath.jsonpath(response, k)[0]))
                 # Logger.info(v)
                 # actual_results=(jsonpath.jsonpath(response, k)[0])#实际结果
@@ -63,9 +67,17 @@ class AssertApi():
                 try:
 
                     if date_type_ch=='str':
-                        exec(f"asser_results = '{Expected_ch}' {AssertType_ch} '{Actual_ch}'")
+                        try:
+                            Logger.info(f'asser_results = "{Expected_ch}" {AssertType_ch} "{Actual_ch}"')
+                            exec(f'asser_results = "{Expected_ch}" {AssertType_ch} "{Actual_ch}"')
+                        except:
+                            Logger.info(f"asser_results = '{Expected_ch}' {AssertType_ch} '{Actual_ch}'")
+                            exec(f"asser_results = '{Expected_ch}' {AssertType_ch} '{Actual_ch}'")
+
                     elif date_type_ch=='int':
+                        Logger.info(f"asser_results = {Expected_ch} {AssertType_ch} {Actual_ch}")
                         exec(f"asser_results = {Expected_ch} {AssertType_ch} {Actual_ch}")
+
                     else:
                         raise "没有定义，这样”%s“的数据类型，当前定义了[str,int]"%date_type_ch
                     result=(loc['asser_results'])
@@ -80,8 +92,15 @@ class AssertApi():
 
 
                 #result = (real_v == real_k)
+                #expect_jsonpath_str=str(expect_jsonpath_str.replace("[[","").replace("]]",""))
+                try:
+                    expect_jsonpath_str = expect_jsonpath_str.replace("[[", "").replace("]]", "")
+                except:
+                    expect_jsonpath_str =str(expect_jsonpath_str)
+
+                Logger.info(expect_jsonpath_str)
                 result_dic={
-                        "提取路径": [Expected_js,Actual_js],
+                        "提取路径": expect_jsonpath_str,
                         "预期结果": Expected_ch,
                         "断言类型": AssertType_ch,
                         "实际结果": Actual_ch,
@@ -99,7 +118,7 @@ class AssertApi():
         with allure.step('断言：%s'%(False not in result_all)):
             for result_dic in result_dic_list:
                 allure.attach(
-                    json.dumps(result_dic, ensure_ascii=False, indent=4),
+                    json.dumps(result_dic, ensure_ascii=False, indent=4).replace("\\",''),
                     "断言：%s：" % (result_dic.get('测试结果',False)),
                     allure.attachment_type.JSON,
                 )
@@ -114,10 +133,14 @@ class AssertApi():
             if sql_srt!="":
                 sql_srt = ExchangeData.rep_expr(sql_srt, return_type='srt')
 
-                with allure.step('执行sql：%s' % (sql_srt)):
+                with allure.step('执行sql：'):
                     for n,sql in enumerate(sql_srt.split(";")):
                         Logger.info([n,sql])
-                        data_sql_dic=get_db.execute_sql(sql)
+                        try:
+                            data_sql_dic = get_db.execute_sql(sql)
+                        except Exception as e:
+                            Logger.error(f'数据库查询失败！（{e}）')
+                            data_sql_dic = {'message': "数据库查询失败！","error":f"{e}"}
                         Logger.info(data_sql_dic)
                         Logger.info(type(data_sql_dic))
                         #ExchangeData.extra_pool.update({"sql_%s_data"%n:data_sql_dic})
