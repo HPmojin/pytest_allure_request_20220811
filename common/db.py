@@ -17,7 +17,7 @@ import pymysql
 from common.logger import Logger
 from psycopg2 import extras  # 不能少
 from common.read_file import ReadFile
-
+import datetime
 
 class DB:
 
@@ -42,7 +42,7 @@ class DB:
                 self.connection = psycopg2.connect( **db_info['data'],)
         except Exception as e:
             Logger.error("数据库链接失败！！（%s）"%e)
-            raise
+            #raise
 
     def execute_sql(self, sql: str) -> Union[dict, None]:
         """
@@ -104,6 +104,9 @@ class DB:
             for k, v in value.items():
                 if isinstance(v, decimal.Decimal):
                     value[k] = str(v)
+                elif isinstance(v, datetime.datetime):
+                    value[k] = str(v) #.split('.')[0]
+
         return value
 
     def close(self):
