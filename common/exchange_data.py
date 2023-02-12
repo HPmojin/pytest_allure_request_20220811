@@ -28,6 +28,7 @@ class ExchangeData():
 
     @classmethod
     def Extract(cls,response,josn_path_dic):
+        josn_path_dic = cls.rep_expr(josn_path_dic, return_type='srt')
 
         if josn_path_dic!="" and eval(josn_path_dic)!={}:
             for k, v in eval(josn_path_dic).items():
@@ -60,7 +61,7 @@ class ExchangeData():
             Extract_noe_v= Extract_noe_v_list[random.randint(0, len(Extract_noe_v_list) - 1)]  # 如拿到是多个数据，列表，随机取其中一个
         except Exception as e:
             #Logger.warning(josn_path)
-            josn_path = ExchangeData.rep_expr(josn_path, return_type='no')
+            #josn_path = ExchangeData.rep_expr(josn_path, return_type='no')
             Extract_noe_v = josn_path
 
             #Extract_noe_v = None
@@ -91,15 +92,22 @@ class ExchangeData():
         if not isinstance(content, int):#判断传来的值为int,直接跳出，否则报错 return self.pattern.sub(convert, self.template) E TypeError: expected stri
             if content !="" :
                 data=cls.extra_pool
-                content = Template(content).safe_substitute(data)
-
-                for func in re.findall('\\${(.*?)}', content):#${fk.random_int(min=1000,max=9999)   ${sdsd()}
-                    #Logger.error(func)
-                    try:
+                try:
+                    content = Template(content).safe_substitute(data)
+                except:
+                    content =content
+                try:
+                    for func in re.findall('\\${(.*?)}',content):  # ${sdsd()} '\\${(.*?)}'
                         content = content.replace('${%s}' % func, cls.exec_func(func))
-                    except Exception as e:
-                        Logger.error(func)
-                        Logger.error(str(e))
+                except:
+                    content =content
+                # for func in re.findall('\\${(.*?)}', content):#${fk.random_int(min=1000,max=9999)   ${sdsd()} '\\${(.*?)}'
+                #     #Logger.error(func)
+                #     try:
+                #         content = content.replace('${%s}' % func, cls.exec_func(func))
+                #     except Exception as e:
+                #         Logger.error(func)
+                #         Logger.error(str(e))
 
             #后面两种写法
 
@@ -151,17 +159,21 @@ class ExchangeData():
                 "附件内容",
                 allure.attachment_type.JSON,
             )
+
     @classmethod
-    def extra_allure(cls,extra):
+    def allure_step_text(cls,step_text: str,extra: dict or str, doc="附件内容"):
         if extra=="":
             extra={}
         else:
-            extra=eval(extra)
+            try:
+                extra=eval(extra)
+            except:
+                extra=extra
 
-        with allure.step('提取参数路径：'):
+        with allure.step(f'{step_text}：'):
             allure.attach(
-                json.dumps((extra), ensure_ascii=False, indent=4),
-                "附件内容",
+                json.dumps((extra), ensure_ascii=False, indent=4).replace("\\",''),
+                f"{doc}",
                 allure.attachment_type.JSON,
             )
 
@@ -181,3 +193,21 @@ class ExchangeData():
         file.close()
         data = ExchangeData.rep_expr(data, return_type='srt')
         return data
+    @classmethod
+    def merging_dic(cls,*dict_list):  # 合并字典数据
+        '''
+        dic_1={'s':'s'}
+        dic_2={"33":'asdad'}
+        dic_3={"sdfsd":'asdad'}
+
+        :param dict_list: 字典名称
+        :return: 合并字典数据
+
+        例如：cls.merging_dic(dic_1,dic_2,dic_3)
+
+        '''
+        dic_date = {}
+        for i in dict_list:
+            dic_date.update(cls.extra_pool[i])
+        #
+        return dic_date
