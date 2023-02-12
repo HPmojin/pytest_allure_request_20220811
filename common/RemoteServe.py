@@ -76,7 +76,7 @@ class RemoteServe:
             Logger.info("SFTP客户端创建成功.")
         except Exception as e:
             Logger.error('SSH远程服务链接失败！！（%s）'%e)
-            raise
+            #raise
 
     def execute_cmd(self, cmd: str,docs):
         """
@@ -109,26 +109,36 @@ class RemoteServe:
         :param remote_path: 服务器上的文件路径，默认在/root目录下
         """
         if post:  # 上传文件
-            self.execute_cmd(f"mkdir {remote_path}",docs=f'创建{remote_path}目录') #传教要备份的保存目录
-            remotepath=os.path.join(remote_path,os.path.split(local_path)[1])
-            self.ftp_client.put(
-                localpath=local_path,
-                remotepath=remotepath,
-            )
-            Logger.info(
-                f"{docs}-文件上传成功: {local_path} -> {self.ssh_host}:{remotepath}"
-            )
+            try:
+                self.execute_cmd(f"mkdir {remote_path}",docs=f'创建{remote_path}目录') #传教要备份的保存目录
+                remotepath=os.path.join(remote_path,os.path.split(local_path)[1])
+                self.ftp_client.put(
+                    localpath=local_path,
+                    remotepath=remotepath,
+                )
+                Logger.info(
+                    f"{docs}-文件上传成功: {local_path} -> {self.ssh_host}:{remotepath}"
+                )
+            except Exception as e:
+                Logger.error(f'上传失败！！（{e}）')
         else:  # 下载文件
-            if not os.path.exists(local_path):
-                os.mkdir(local_path)
-            file_path = local_path + os.path.split(remote_path)[1]
-            self.ftp_client.get(remotepath=remote_path, localpath=file_path)
-            Logger.info(f"{docs}-文件下载成功: {self.ssh_host}:{remote_path} -> {file_path}")
+            try:
+                if not os.path.exists(local_path):
+                    os.mkdir(local_path)
+                file_path = local_path + os.path.split(remote_path)[1]
+                self.ftp_client.get(remotepath=remote_path, localpath=file_path)
+                Logger.info(f"{docs}-文件下载成功: {self.ssh_host}:{remote_path} -> {file_path}")
+            except Exception as e:
+                Logger.error(f'文件下载失败！！（{e}）')
 
     def ssh_close(self):
         """关闭连接"""
-        self.trans.close()
-        Logger.info("已关闭SSH连接...")
+        try:
+            self.trans.close()
+            Logger.info("已关闭SSH连接...")
+        except Exception as e:
+            Logger.error(f'断开SSH连接失败！！（{e}）')
+
 
 
 
