@@ -13,6 +13,7 @@ import time
 from common.logger import Logger
 fk = Faker("zh_CN") # https://blog.csdn.net/weixin_43865008/article/details/115492280
 import random
+import requests
 def uuid4():
     return fk.uuid4()
 
@@ -37,40 +38,21 @@ def waits(t):
     return 'sleep %s s'%t
 
 
-def api_mame(singleBatch,stockId='',skuId=''):#singleBatch=False
+def get_file_url(url):
 
-    dic_data={
-        "True":'verifySkuSingleBatch',
-        "False":"listSkuBatch"
+    re=requests.request('get',url=url)
+    status_code=re.status_code
 
-    }
-    dic_data2={
-        # "True":{"operationName":"listCommodityLabel",
-        #         "variables":
-        #             {"input":
-        #                  {"batchIds":[stockId]#stockId=767749550510538753
-        #                   }
-        #              },
-        #         "query":"query listCommodityLabel($input: CommodityLabelInput) {\n  listCommodityLabel(input: $input) {\n    id\n    type\n    typeDesc\n    name\n    categoryId\n    categoryName\n    remark\n    status\n  }\n}"},
-
-        "False":{"operationName":"listSkuBatch",
-                 "variables":
-                     {"input":
-                          {"skuId":int(skuId)
-                           }
-                      },
-                 "query":"query listSkuBatch($input: SkuBatchInput) {\n  listSkuBatch(input: $input) {\n    stockId\n    commoditySkuName\n    commodityCategoryId\n    commoditySkuId\n    commoditySpuId\n    stock {\n      skuId\n      basicType\n      subType\n      basicQuantity\n      subQuantity\n    }\n    inStockTime\n    warehouseId\n    warehouseType\n    warehouseName\n    carNo\n    cabinetCode\n    shoppingCarNum\n    quantityUnitType\n    unitPrice\n    trailerCarNo\n    temporaryStatus\n    refundMarksStatus\n    unitConversion {\n      skuId\n      basicType\n      subType\n      basicTypeRatio\n      subTypeRatio\n    }\n    disable\n    guidePrice\n    guidePriceUnitId\n    saleMark\n    belongOwner\n  }\n}"}
+    data_dic={
+        "文件地址": url,
+        "文件地址请求响应码":f'{status_code}(响应码)',
 
     }
+    return data_dic
 
-    return dic_data2[singleBatch]
-
-# def api_mame3(api_ma):#singleBatch=False
-#
-#     dic_data={
-#         "verifySkuSingleBatch":'VerifySkuSingleBatch',
-#         "listSkuBatch":"SkuBatch"
-#
-#     }
-#
-#     return dic_data[api_ma]
+# url='http://192.168.1.55:5188/SuiAnYun/轨道交通AR应急处置系统（遂安云）项目测试报告.pdf'
+# #
+# data=(get_file_url(url))
+# print(str(data))
+# n="响应码200" in str(data)
+# print(n)
