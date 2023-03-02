@@ -4,7 +4,7 @@ server:
   # 本地接口服务
 
   #dev: http://192.168.1.183:8888/api/private/v1  http://127.0.0.1:8888/api/private/v1 https://peach-test.hjgpscm.com/graphql
-  dev: http://192.168.1.182:8888/api/private/v1
+  dev: http://192.168.1.185:8888/api/private/v1
   test: http://192.168.1.183:8888/api/private/v1
   prod: http://127.0.0.1:8888/api/private/v1
 
@@ -25,10 +25,10 @@ severity:
     P5: trivial
 
 # 基准的请求头信息
-request_headers: {"peachauthversioncode": "${versioncode}","appversioncode": "${versioncode}",}
+request_headers: {}
 
 # 基准存放提取参数的池子
-extra_pool: {"userAccount": "ceshi6","password": "Hj123456","org_id": 176,"tenant_id": 1,"token":'',"versioncode": "9","singleBatch": False}
+extra_pool: {"token":''}
 
 # 基准的请求参数
 request_parameters: {}
