@@ -10,6 +10,7 @@
 
 from requests import Session
 import requests
+from urllib.parse import urljoin
 from common.logger import Logger
 from common.exchange_data import ExchangeData
 import allure,json,re
@@ -99,7 +100,8 @@ class Api_Request():
 
         pattern = re.compile(r'^((https|http|ftp|rtsp|mms)?:\/\/)[^\s]+')
         if (pattern.search(path)) == None:  # 判断读取的地址是否有前缀地址http://192.168.1.153:8562
-            urls ="%s/%s"%(url,path)  # 无前缀读取配置文件添加前缀
+            #urls ="%s/%s"%(url,path)  # 无前缀读取配置文件添加前缀
+            urls =urljoin(url, path)
         else:
             urls = path  # 有前缀使用读取的完整地址
 
