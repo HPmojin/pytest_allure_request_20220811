@@ -1,3 +1,11 @@
+
+[![](https://gitee.com/HP_mojin/pytest_allure_request_20220811/badge/star.svg)](https://gitee.com/HP_mojin/pytest_allure_request_20220811)
+[![](https://gitee.com/HP_mojin/pytest_allure_request_20220811/badge/fork.svg)](https://gitee.com/HP_mojin/pytest_allure_request_20220811)
+[![](https://img.shields.io/github/license/HPmojin/Aip-pytest-allure-request-jsonpath-excle)](https://gitee.com/zy7y/apiAutoTest/blob/master/LICENSE)
+[![](https://img.shields.io/github/stars/HPmojin/Aip-pytest-allure-request-jsonpath-excle)](https://github.com/HPmojin/Aip-pytest-allure-request-jsonpath-excle)
+[![](https://img.shields.io/github/forks/HPmojin/Aip-pytest-allure-request-jsonpath-excle)](https://github.com/HPmojin/Aip-pytest-allure-request-jsonpath-excle)
+[![](https://img.shields.io/github/repo-size/HPmojin/Aip-pytest-allure-request-jsonpath-excle?style=social)](https://github.com/HPmojin/Aip-pytest-allure-request-jsonpath-excle)
+
 # Aip接口自动化测试pytest+allure+request+jsonpath+excle/yaml
 
 #### 介绍
@@ -7,9 +15,10 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle/yaml，一�
 3.用例中字符串中写入函数名，获取随机值做新增接口数据   
 4.数据库查询断言 ，数据库提取参数  
 5.数据库初始化备份恢复  
+5.sql查询数据做查询断言和请求数据     
 6.使用pytest+allure框架   
 7.测试完成后打包allure报告为zip包通过邮件发送   
-8.切换运行环境，dev/test/prod
+8.一键切换运行环境，dev/test/prod
 
 ![img.png](config/png/img.png)
 
@@ -278,7 +287,10 @@ Aip接口自动化测试python+pytest+allure+request+jsonpath+excle/yaml，一�
 
 #### 联系方式
 
-![img_10.png](config/png/img_10.png)
-![img_9.png](config/png/img_9.png)
+![img_12.png](config/png/img_12.png)
+![img_9.png](config/png/img_9.png)    
+        
+备注：如群码过期请添加微信，备注 “加群” 拉入群  
+ 
 
 

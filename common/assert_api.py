@@ -124,6 +124,7 @@ class AssertApi():
                 )
 
         Logger.info(result_all)
+        self.re_sql_data.clear()
         return False not in result_all
 
 
